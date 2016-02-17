@@ -10,8 +10,8 @@ ciIntegratorApp.service(
 						var d = $q.defer();
 						$log.debug('templateData' + templateData);
 						console.log(templateData.projectGroup);
-						$http.post(
-								'/integrator-rest/templateService/',templateData).success(function(response) {
+						$http.get(
+								'/integrator-rest/templateService/push/'+ templateData.artifact).success(function(response) {
 							d.resolve(response);
 							$log.debug("success" + response);
 						}).error(function() {
