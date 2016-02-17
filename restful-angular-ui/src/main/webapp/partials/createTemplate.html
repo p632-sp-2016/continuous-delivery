@@ -1,5 +1,15 @@
-<div class="row">
+<div class="row wells">
 		<form ng-submit="processForm()">
+		    <div class="form-group col-xs-12 col-md-6 col-lg-6">
+				<label for="parentProjectGroup">Project Group</label> <input type="text"
+					class="form-control" id="parentProjectGroup" placeholder="Parent Project Group"
+					ng-model="template.parentProjectGroup">
+			</div>
+			<div class="form-group col-xs-12 col-md-6 col-lg-6">
+				<label for="parentArtifact">Artifact</label> <input type="text"
+					class="form-control" id="parentArtifact" placeholder="Parent Artifact"
+					ng-model="template.parentArtifact">
+			</div>
 			<div class="form-group col-xs-12 col-md-6 col-lg-6">
 				<label for="projectGroup">Project Group</label> <input type="text"
 					class="form-control" id="projectGroup" placeholder="Project Group"
