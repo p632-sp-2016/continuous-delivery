@@ -1,0 +1,26 @@
+{
+  "name": "TestGit",
+  "homepage": "https://github.com/akshaykamath/TestGitFlow",
+  "authors": [
+    "akkamath@iu.edu"
+  ],
+  "directory": "src/main/webapp",
+  "description": "",
+  "main": "index.html",
+  "moduleType": [],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^2.2.1",
+    "angular-ui": "^0.4.0",
+    "bootstrap": "^3.3.6",
+    "angular-ui-router": "^0.2.18"
+  }
+}
