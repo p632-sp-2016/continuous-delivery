@@ -10,8 +10,6 @@ libs
 # Classpath
 .classpath
 
-# Config properties
-config.properties
 
 # Logs
 logs
