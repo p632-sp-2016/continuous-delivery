@@ -3,7 +3,9 @@ package org.p632.turnkey.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.p632.turnkey.beans.GitConfigurationBean;
 import org.p632.turnkey.beans.TestBean;
+import org.p632.turnkey.model.TemplateModel;
 import org.p632.turnkey.model.TestModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
@@ -22,6 +24,9 @@ public class TestController {
 
 	@Autowired
 	private TestBean testBean;
+	
+	@Autowired
+	private GitConfigurationBean gitConfigurationBean;
 
 	@RequestMapping(value = "/config")
 	public TestModel readConfig(ModelMap model) {
@@ -45,8 +50,19 @@ public class TestController {
 	}
 	
 	@RequestMapping(value = "/createTemplate")
-	public void createTemplate(@RequestBody String details) {
-		//System.out.println(details);
+	public void createTemplate(@RequestBody TemplateModel details) {
+		
+		int returnStatus = gitConfigurationBean.createRemoteRepos(details.getArtifact());
+		
+		if(returnStatus ==201)
+		{
+		// TODO remove sop statement and call another method from gitConfigurationBean for 
+		// pushing the local repository to git hub remote repo	
+		// which will handled in Jira issue S16FRANCIS-30
+		}
+		else {
+//		//	TODO return result back to UI	
+		}
 	}
 
 }

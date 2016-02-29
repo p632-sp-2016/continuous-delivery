@@ -20,7 +20,7 @@ import java.io.UnsupportedEncodingException;
 @Component
 public class GitConfigurationBean {
 	
-	@Value("$user.authToken}")
+	@Value("${user.authToken}")
 	private String authtoken;
 
 	@Value("${test.serverPath}")
@@ -61,7 +61,7 @@ public class GitConfigurationBean {
     	{
     		//TODO exception handing 		
     		ex.printStackTrace();
-    	}
+        }
     	catch( IOException ex)
     	{
     		//TODO exception handing 		
