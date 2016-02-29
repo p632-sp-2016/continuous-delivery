@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 
- * Test Class to validate spring rest flow.
+ * This is the rest controller for github project builder module.
  *
  */
 @RestController
