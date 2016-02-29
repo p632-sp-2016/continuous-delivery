@@ -14,7 +14,7 @@ libs
 .classpath
 
 # Config properties
-config.properties
+#config.properties
 
 # Logs
 logs
