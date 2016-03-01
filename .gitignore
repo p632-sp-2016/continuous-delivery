@@ -1,3 +1,16 @@
+#libs
+libs
+
+#Settings
+.settings
+
+# Project
+.project
+
+# Classpath
+.classpath
+
+
 # Logs
 logs
 *.log
