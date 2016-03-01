@@ -1,0 +1,43 @@
+<div class="row jumbotron">
+		<form ng-submit="processForm()">
+			<div class="form-group col-xs-12 col-md-6 col-lg-6">
+				<label for="projectGroup">Project Group</label> <input type="text"
+					class="form-control" id="projectGroup" placeholder="Project Group"
+					ng-model="template.projectGroup">
+			</div>
+			<div class="form-group col-xs-12 col-md-6 col-lg-6">
+				<label for="artifact">Artifact</label> <input type="text"
+					class="form-control" id="artifact" placeholder="Artifact"
+					ng-model="template.artifact">
+			</div>
+			<div class="form-group col-xs-12 col-md-6 col-lg-6">
+				<label for="packageName">Package Name</label> <input type="text"
+					class="form-control" id="packageName" placeholder="Package Name"
+					ng-model="template.packageName">
+			</div>
+			<div class="form-group col-xs-12 col-md-3 col-lg-6">
+				<label for="dependencySelect"> Add Dependency</label> 
+				<select
+					name="dependencySelect" id="dependencySelect" multiple="true"
+					ng-model="template.dependencyList">
+					<option ng-repeat="item in dependencyLoadList"
+						value="{{item}}">{{item}}</option>
+				</select>
+			</div>
+			<div class="form-group col-xs-12 col-md-6 col-lg-6">
+				<label for="packagingType">Packaging Type</label><br>
+					 <select
+					name="packagingType" id="packagingType"
+					ng-model="template.packagingType" >
+					<option ng-repeat="item in packagingTypeList" value="{{item}}">{{item}}</option>
+				</select>
+			</div>
+			
+			
+			<div class="form-group row text-center col-lg-12">
+				<button type="submit" name="submit" value="submit" id="submit"
+					class="btn btn-primary">Submit</button>
+
+			</div>
+		</form>
+</div>
