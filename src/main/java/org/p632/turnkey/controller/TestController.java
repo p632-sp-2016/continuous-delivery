@@ -27,9 +27,6 @@ public class TestController {
 	@Autowired
 	private TestBean testBean;
 	
-	@Autowired
-	private GitConfigurationBean gitConfigurationBean;
-
 	@RequestMapping(value = "/config")
 	public TestModel readConfig(ModelMap model) {
 		String userCred = testBean.testMethod();
@@ -51,20 +48,4 @@ public class TestController {
 		return depList;
 	}
 	
-	@RequestMapping(value = "/createTemplate")
-	public void createTemplate(@RequestBody TemplateModel details) {
-		
-		int returnStatus = gitConfigurationBean.createRemoteRepos(details.getArtifact());
-		
-		if(returnStatus ==201)
-		{
-					
-			gitConfigurationBean.pushLocalRepos(details.getArtifact());
-		//TODO return proper status message to UI	
-		}
-		else {
-//		//	TODO return result back to UI	
-		}
-	}
-
 }
