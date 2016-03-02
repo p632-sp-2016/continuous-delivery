@@ -91,36 +91,42 @@ public class GitConfigurationBean {
 		return statusCode;
 	}
 
-	/**
+	/**f
 	 * Pushes the local server repository to remote
 	 * 
 	 * @param remoteReposName
 	 */
 	public void pushLocalRepos(String remoteReposName) {
 		remoteReposName = (remoteReposName == null) ? "Default" : remoteReposName;
-		File file = new File(serverPath + "\\new");
+		
+		serverPath = serverPath.replace(".", File.separator);
+		File file = new File(serverPath +File.separator +"temp");
+		
 		try {
-			file.mkdirs();
 
+			Thread.sleep(2000);
+			
+			file.mkdirs();
 			File localPath = File.createTempFile("Start-", "-End", file);
 			localPath.delete();
-			remoteUrl = remoteUrl + "/" + username + "/" + remoteReposName + ".git";
+			
+			String remoteRepoUrl = remoteUrl + "/" + username + "/" + remoteReposName + ".git";
 			Git git = Git.init().setDirectory(localPath).call();
-
+	
 			Repository repository = FileRepositoryBuilder.create(new File(localPath.getAbsolutePath(), ".git"));
-
 			File myfile = new File(repository.getDirectory().getParent(), "testfile");
 			myfile.createNewFile();
-
+			
 			git.add().addFilepattern("testfile").call();
 			git.commit().setMessage("Create readme file").call();
 
 			CredentialsProvider crdn = new UsernamePasswordCredentialsProvider(authtoken, "");
 			PushCommand pc = git.push();
-
-			pc.setCredentialsProvider(crdn).setForce(true).setRemote(remoteUrl).setPushAll();
+			
+			pc.setCredentialsProvider(crdn).setForce(true).setRemote(remoteRepoUrl).setPushAll();
 			pc.call().iterator();
 
+		
 		} catch (ConcurrentRefUpdateException ex) {
 			ex.printStackTrace();
 
