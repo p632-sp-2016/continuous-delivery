@@ -1,3 +1,10 @@
+<<<<<<< HEAD
+=======
+
+#bin
+bin
+
+>>>>>>> 7278f13bd9429bd862a73ef07ce7ed1d0c100a67
 #libs
 libs
 
@@ -15,6 +22,7 @@ config.properties
 
 # Logs
 logs
+
 *.log
 npm-debug.log*
 
