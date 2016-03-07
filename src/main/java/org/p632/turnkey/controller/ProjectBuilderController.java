@@ -29,7 +29,7 @@ public class ProjectBuilderController {
 	private GitConfigurationBean gitConfigurationBean;
 
 	@RequestMapping(value = "/dependencyList")
-	public ResponseEntity<?> loadDependencyList(ModelMap model) {
+	public ResponseEntity<?> loadDependencyList(ModelMap model) throws Exception {
 		List<String> dependencyList = builderBean.getDependencyList();
 		return new ResponseEntity<List<String>>(dependencyList, HttpStatus.OK);
 	}
@@ -41,12 +41,11 @@ public class ProjectBuilderController {
 		if (returnStatus == 201) {
 			gitConfigurationBean.pushLocalRepos(templateModel.getArtifact());
 			templateModel.setReturnMsg("success");
-		}else{
+		} else {
 			templateModel.setReturnMsg("failure");
-			return new ResponseEntity<TemplateModel>(templateModel,HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<TemplateModel>(templateModel, HttpStatus.BAD_REQUEST);
 		}
-		
-		return new ResponseEntity<TemplateModel>(templateModel,HttpStatus.OK);
+		return new ResponseEntity<TemplateModel>(templateModel, HttpStatus.OK);
 
 	}
 }

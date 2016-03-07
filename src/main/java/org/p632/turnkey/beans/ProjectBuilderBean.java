@@ -22,38 +22,34 @@ import org.w3c.dom.NodeList;
  */
 @Component
 public class ProjectBuilderBean {
-	
+
 	@Autowired
-    private ResourceLoader resourceLoader;
-	
+	private ResourceLoader resourceLoader;
+
 	@Value("${test.serverPath}")
 	private String serverPath;
 
-	public List<String> getDependencyList() {
+	public List<String> getDependencyList() throws Exception {
 		List<String> listDeps = new ArrayList<String>();
 
-		try {
-			serverPath = serverPath.replace(".", File.separator);
-			Resource resource = resourceLoader.getResource("file:"+ serverPath +"/dependency.xml");
-			File xmlFile = resource.getFile();
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document doc = dBuilder.parse(xmlFile);
-			NodeList nList = doc.getElementsByTagName("dependency");
+		serverPath = serverPath.replace(".", File.separator);
+		Resource resource = resourceLoader.getResource("file:" + serverPath + "/dependency.xml");
+		File xmlFile = resource.getFile();
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		Document doc = dBuilder.parse(xmlFile);
+		NodeList nList = doc.getElementsByTagName("dependency");
 
-			for (int temp = 0; temp < nList.getLength(); temp++) {
+		for (int temp = 0; temp < nList.getLength(); temp++) {
 
-				Node nNode = nList.item(temp);
+			Node nNode = nList.item(temp);
 
-				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+			if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 
-					Element eElement = (Element) nNode;
-					String dependency = eElement.getElementsByTagName("artifactId").item(0).getTextContent();
-					listDeps.add(dependency);
-				}
+				Element eElement = (Element) nNode;
+				String dependency = eElement.getElementsByTagName("artifactId").item(0).getTextContent();
+				listDeps.add(dependency);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 
 		return listDeps;

@@ -1,7 +1,6 @@
 package org.p632.turnkey.beans;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpEntity;
@@ -62,14 +61,8 @@ public class GitConfigurationBean {
 			statusCode = response.getStatusLine().getStatusCode();
 
 			entity = response.getEntity();
-		} catch (Exception ex) {
-			throw ex;
 		} finally {
-			try {
-				EntityUtils.consume(entity);
-			} catch (IOException ex) {
-				throw ex;
-			}
+			EntityUtils.consume(entity);
 		}
 		return statusCode;
 	}
@@ -110,15 +103,8 @@ public class GitConfigurationBean {
 			pc.setCredentialsProvider(crdn).setForce(true).setRemote(remoteRepoUrl).setPushAll();
 			pc.call().iterator();
 
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			throw ex;
 		} finally {
-			try {
-				FileUtils.deleteDirectory(file);
-			} catch (IOException ex) {
-				throw ex;
-			}
+			FileUtils.deleteDirectory(file);
 		}
 
 	}
