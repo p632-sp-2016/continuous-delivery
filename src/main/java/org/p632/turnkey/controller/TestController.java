@@ -1,10 +1,14 @@
 package org.p632.turnkey.controller;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.p632.turnkey.beans.TestBean;
+import org.p632.turnkey.model.TemplateModel;
 import org.p632.turnkey.model.TestModel;
+import org.p632.turnkey.beans.GitConfigurationBean;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +26,7 @@ public class TestController {
 
 	@Autowired
 	private TestBean testBean;
-
+	
 	@RequestMapping(value = "/config")
 	public TestModel readConfig(ModelMap model) {
 		String userCred = testBean.testMethod();
@@ -44,9 +48,4 @@ public class TestController {
 		return depList;
 	}
 	
-	@RequestMapping(value = "/createTemplate")
-	public void createTemplate(@RequestBody String details) {
-		//System.out.println(details);
-	}
-
 }

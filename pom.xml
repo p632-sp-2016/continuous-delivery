@@ -10,45 +10,109 @@
 		<spring.version>4.2.4.RELEASE</spring.version>
 	</properties>
 
-
 	<dependencies>
-		<dependency>
+	    <dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.0</version>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		
 		<dependency>
-			<groupId>org.springframework</groupId>
+		    <groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.fasterxml.jackson.jaxrs</groupId>
 			<artifactId>jackson-jaxrs-base</artifactId>
 			<version>2.4.4</version>
 		</dependency>
 
-	</dependencies>
-
+	 	<!-- Dependencies for Git Module -->
+    	<dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.5</version>
+        </dependency>
+        <dependency>
+    		<groupId>commons-codec</groupId>
+	    	<artifactId>commons-codec</artifactId>
+		    <version>1.9</version>
+	    </dependency>
+    	<dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.5</version>
+	    </dependency>
+        <dependency>
+		    <groupId>commons-httpclient</groupId>
+		    <artifactId>commons-httpclient</artifactId>
+		    <version>3.1</version>
+	    </dependency>
+        <dependency>
+    	    <groupId>javax.json</groupId>
+    	    <artifactId>javax.json-api</artifactId>
+    	    <version>1.0</version>
+	    </dependency>
+	    <dependency>
+		    <groupId>org.codehaus.httpcache4j.resolvers</groupId>
+		    <artifactId>resolvers-net-urlconnection</artifactId>
+		    <version>1.6</version>
+	    </dependency>
+    	<dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+    	    <artifactId>httpclient</artifactId>
+    	    <version>4.2.1</version>
+    	    <scope>compile</scope>
+        </dependency>
+    
+        <!-- Core Library -->
+        <dependency>
+            <groupId>org.eclipse.jgit</groupId>
+            <artifactId>org.eclipse.jgit</artifactId>
+            <version>4.2.0.201601211800-r</version>
+        </dependency>
+  
+  		<!-- Smart HTTP Servlet -->
+        <dependency>
+            <groupId>org.eclipse.jgit</groupId>
+            <artifactId>org.eclipse.jgit.http.server</artifactId>
+            <version>4.2.0.201601211800-r</version>
+        </dependency>
+    
+        <!--  slf4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.5</version>
+        </dependency>
+ 
+        <!-- AWT UI Helpers -->
+        <dependency>
+            <groupId>org.eclipse.jgit</groupId>
+            <artifactId>org.eclipse.jgit.ui</artifactId>
+            <version>4.2.0.201601211800-r</version>
+        </dependency>
+    </dependencies>
+	
 </project>

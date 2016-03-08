@@ -7,7 +7,7 @@ ciIntegratorApp.service('IntegratorService', [
 			this.createTemplate = function(templateData) {
 				var d = $q.defer();
 				$log.debug(templateData);
-				$http.post('integrator-rest/test/createTemplate/', templateData)
+				$http.post('integrator-rest/projectbuilder/buildTemplate', templateData)
 						.success(function(response) {
 							d.resolve(response);
 							$log.debug(response);

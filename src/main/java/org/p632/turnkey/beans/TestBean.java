@@ -14,7 +14,7 @@ public class TestBean {
 	@Value("${test.username}")
 	private String userName;
 
-	@Value("${test.password}")
+	@Value("${test.username}")
 	private String password;
 
 	public String testMethod() {
