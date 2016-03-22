@@ -7,6 +7,10 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -18,13 +22,20 @@ import org.w3c.dom.NodeList;
  */
 @Component
 public class ProjectBuilderBean {
+	
+	@Autowired
+    private ResourceLoader resourceLoader;
+	
+	@Value("${test.serverPath}")
+	private String serverPath;
 
 	public List<String> getDependencyList() {
 		List<String> listDeps = new ArrayList<String>();
 
 		try {
-			ClassLoader classLoader = getClass().getClassLoader();
-			File xmlFile = new File(classLoader.getResource("dependency.xml").getFile());
+			serverPath = serverPath.replace(".", File.separator);
+			Resource resource = resourceLoader.getResource("file:"+ serverPath +"/dependency.xml");
+			File xmlFile = resource.getFile();
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			Document doc = dBuilder.parse(xmlFile);

@@ -6,6 +6,8 @@ import org.p632.turnkey.beans.GitConfigurationBean;
 import org.p632.turnkey.beans.ProjectBuilderBean;
 import org.p632.turnkey.model.TemplateModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,21 +29,24 @@ public class ProjectBuilderController {
 	private GitConfigurationBean gitConfigurationBean;
 
 	@RequestMapping(value = "/dependencyList")
-	public List<String> loadDependencyList(ModelMap model) {
-
-		return builderBean.getDependencyList();
+	public ResponseEntity<?> loadDependencyList(ModelMap model) {
+		List<String> dependencyList = builderBean.getDependencyList();
+		return new ResponseEntity<List<String>>(dependencyList, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/buildTemplate")
-	public void createTemplate(@RequestBody TemplateModel details) {
+	public ResponseEntity<?> createTemplate(@RequestBody TemplateModel templateModel) throws Exception {
 
-		int returnStatus = gitConfigurationBean.createRemoteRepos(details.getArtifact());
+		int returnStatus = gitConfigurationBean.createRemoteRepos(templateModel.getArtifact());
 		if (returnStatus == 201) {
-			gitConfigurationBean.pushLocalRepos(details.getArtifact());
-			// TODO return proper status message to UI
-		} else {
-			// // TODO return result back to UI
+			gitConfigurationBean.pushLocalRepos(templateModel.getArtifact());
+			templateModel.setReturnMsg("success");
+		}else{
+			templateModel.setReturnMsg("failure");
+			return new ResponseEntity<TemplateModel>(templateModel,HttpStatus.BAD_REQUEST);
 		}
 		
+		return new ResponseEntity<TemplateModel>(templateModel,HttpStatus.OK);
+
 	}
 }

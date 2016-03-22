@@ -3,7 +3,7 @@ package org.p632.turnkey.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class TemplateModel implements Serializable{
+public class TemplateModel implements Serializable {
 
 	/**
 	 * 
@@ -14,6 +14,7 @@ public class TemplateModel implements Serializable{
 	private String packageName;
 	private ArrayList<String> dependencyList = new ArrayList<String>();
 	private String packagingType;
+	private String returnMsg;
 
 	public String getProjectGroup() {
 		return projectGroup;
@@ -53,6 +54,14 @@ public class TemplateModel implements Serializable{
 
 	public void setPackagingType(String packagingType) {
 		this.packagingType = packagingType;
+	}
+
+	public String getReturnMsg() {
+		return returnMsg;
+	}
+
+	public void setReturnMsg(String returnMsg) {
+		this.returnMsg = returnMsg;
 	}
 
 }
