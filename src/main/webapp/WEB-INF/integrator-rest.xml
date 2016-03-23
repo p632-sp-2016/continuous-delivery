@@ -14,7 +14,7 @@ http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 	<bean id="propertyConfigurer"
 		class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
 		<property name="location">
-			<value>file:/home/softeng/students/spring2016/FrancisCD/config.properties</value>
+			<value>file:/home/softeng/students/sprint2016/FrancisCD/config.properties</value>
 		</property>
 	</bean>
 
