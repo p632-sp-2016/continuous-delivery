@@ -46,6 +46,8 @@ public class ProjectBuilderController {
 			return new ResponseEntity<TemplateModel>(templateModel,HttpStatus.BAD_REQUEST);
 		}
 		
+		builderBean.generatePom();
+		
 		return new ResponseEntity<TemplateModel>(templateModel,HttpStatus.OK);
 
 	}

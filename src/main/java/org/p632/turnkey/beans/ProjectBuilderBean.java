@@ -1,6 +1,8 @@
 package org.p632.turnkey.beans;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import org.p632.turnkey.pom.Pom;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 /**
  * The bean to create a maven project template.
@@ -58,4 +65,28 @@ public class ProjectBuilderBean {
 
 		return listDeps;
 	}
+	
+	public void generatePom()
+	{
+    	ObjectMapper mapper = new XmlMapper();
+    	ObjectMapper xmlMapper = new XmlMapper();
+    	String xml;
+		try {
+			Pom pom = new Pom();
+			pom.AddDependency("groupId1", "artifact1", "version1");
+			pom.AddDependency("groupId2", "artifact2", "version2");
+			xml = xmlMapper.writeValueAsString(pom);
+			PrintWriter out = new PrintWriter("C:\\xml\\Pom.xml");
+			out.println( xml );
+			out.close();
+			System.out.println(xml );
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
+
