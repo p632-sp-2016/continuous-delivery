@@ -54,31 +54,17 @@ public class ProjectBuilderControllerTest {
 	public void loadDependencyListMockTest() throws Exception {
 		
 		ArrayList<String> result = new ArrayList<String>();
-		result.add("spring-core-3.0.1");
-		result.add("spring-webmvc-4.2.1");
-		result.add("spring-test-4.0.1");
-		result.add("junit-4.1");
+		result.add("junit");
+		result.add("spring-core");
+		result.add("spring-context");
+		result.add("spring-webmvc");
+		result.add("jackson-jaxrs-base");
 		
-		mockMvc.perform(get("/test/dependencyList")).andExpect(status().isOk());
-		mockMvc.perform(get("/test/dependencyList").accept(MediaType.APPLICATION_JSON_UTF8))
+		
+		mockMvc.perform(get("/projectbuilder/dependencyList")).andExpect(status().isOk());
+		mockMvc.perform(get("/projectbuilder/dependencyList").accept(MediaType.APPLICATION_JSON_UTF8))
 							.andExpect(status().isOk())
-							.andExpect(jsonPath("$", Matchers.hasSize(4)))
-							.andExpect(jsonPath("$", Matchers.equalTo((result))));
-	}
-	
-	@Test
-	public void createTemplateMockTest() throws Exception {
-		
-		ArrayList<String> result = new ArrayList<String>();
-		result.add("spring-core-3.0.1");
-		result.add("spring-webmvc-4.2.1");
-		result.add("spring-test-4.0.1");
-		result.add("junit-4.1");
-		
-		mockMvc.perform(get("/test/dependencyList")).andExpect(status().isOk());
-		mockMvc.perform(get("/test/dependencyList").accept(MediaType.APPLICATION_JSON_UTF8))
-							.andExpect(status().isOk())
-							.andExpect(jsonPath("$", Matchers.hasSize(4)))
+							.andExpect(jsonPath("$", Matchers.hasSize(5)))
 							.andExpect(jsonPath("$", Matchers.equalTo((result))));
 	}
 	
