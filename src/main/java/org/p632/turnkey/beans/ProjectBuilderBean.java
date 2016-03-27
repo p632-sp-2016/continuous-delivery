@@ -84,9 +84,9 @@ public class ProjectBuilderBean {
 			pom.groupId = templateModel.getProjectGroup();
 			pom.packaging = templateModel.getPackagingType();
 			// todo
-			pom.parent.groupId = templateModel.getProjectGroup();
+			pom.parent.groupId = templateModel.getParentProjectGroup();
 			// todo
-			pom.parent.artifactId = "p_artifact";
+			pom.parent.artifactId = templateModel.getParentArtifact();
 			PrepareDependencyXml(templateModel.getDependencyList(),pom);
 			
 			xml = xmlMapper.writeValueAsString(pom);
@@ -113,6 +113,7 @@ public class ProjectBuilderBean {
 			
 			String xml = Utilities.GetAllLines(xmlFile);
 			xml = xml.replace("\r\n", "");
+			xml = xml.replace("\t", "");
 			DependencyList knownDependencies = xmlMapper.readValue(xml, DependencyList.class);		
 		
 			for (String selectedDependency : dependencyList) {
