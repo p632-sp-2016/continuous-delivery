@@ -1,5 +1,6 @@
 package org.p632.turnkey.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.p632.turnkey.beans.GitConfigurationBean;
@@ -45,10 +46,10 @@ public class ProjectBuilderController {
 			templateModel.setReturnMsg("failure");
 			return new ResponseEntity<TemplateModel>(templateModel,HttpStatus.BAD_REQUEST);
 		}
+				
 		
-		builderBean.generatePom();
+		builderBean.generatePom(templateModel);
 		
 		return new ResponseEntity<TemplateModel>(templateModel,HttpStatus.OK);
-
 	}
 }

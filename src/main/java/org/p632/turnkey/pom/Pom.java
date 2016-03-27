@@ -21,6 +21,9 @@ public class Pom{
 	@JacksonXmlProperty(localName = "version")
     public String version = "0.0.1-SNAPSHOT";
 	
+	@JacksonXmlProperty(localName = "parent")
+	public Parent parent = new Parent();
+	
 	@JacksonXmlProperty(localName = "packaging")
     public String packaging = "jar";
 
@@ -29,9 +32,7 @@ public class Pom{
 	public ArrayList<Dependency> deplist = new ArrayList<Dependency>();
 	
     public Pom()
-    {
-    	//dependencies.add("hello");
-    	
+    {    	 	
     }
     
     public void AddDependency(String groupId, String artifact, String version)
