@@ -2,6 +2,7 @@ package org.p632.turnkey.beans;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpEntity;
@@ -16,6 +17,7 @@ import org.eclipse.jgit.api.PushCommand;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.transport.CredentialsProvider;
+import org.eclipse.jgit.transport.PushResult;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -37,6 +39,9 @@ public class GitConfigurationBean {
 
 	@Value("${test.remoteUrl}")
 	private String remoteUrl;
+
+	@Value("${test.templatePath}")
+	private String templatePath;
 
 	private HttpEntity entity;
 	private int statusCode;
@@ -80,42 +85,41 @@ public class GitConfigurationBean {
 	 * @param remoteReposName
 	 * @throws Exception
 	 */
-	public void pushLocalRepos(String remoteReposName) throws Exception {
+	public Iterator<PushResult> pushLocalRepos(String remoteReposName) throws Exception {
 		remoteReposName = (remoteReposName == null) ? "Default" : remoteReposName;
 
 		serverPath = serverPath.replace(".", File.separator);
-		File file = new File(serverPath + File.separator + "temp");
-
+		templatePath = templatePath.replace(".", File.separator);
+		File destTemplatePath = new File(serverPath + File.separator + "temp");
+		File srcTemplatePath  = new File(templatePath);
 		try {
 
 			Thread.sleep(2000);
 
-			file.mkdirs();
-			File localPath = File.createTempFile("Start-", "-End", file);
-			localPath.delete();
+			destTemplatePath.mkdirs();
 
 			String remoteRepoUrl = remoteUrl + "/" + username + "/" + remoteReposName + ".git";
-			Git git = Git.init().setDirectory(localPath).call();
+			Git git = Git.init().setDirectory(destTemplatePath).call();
 
-			Repository repository = FileRepositoryBuilder.create(new File(localPath.getAbsolutePath(), ".git"));
-			File myfile = new File(repository.getDirectory().getParent(), "testfile");
-			myfile.createNewFile();
-
-			git.add().addFilepattern("testfile").call();
-			git.commit().setMessage("Create readme file").call();
+			Repository repository = FileRepositoryBuilder.create(new File(destTemplatePath.getAbsolutePath(), ".git"));
+			FileUtils.copyDirectory(srcTemplatePath,new File(repository.getDirectory().getParent()));
+		   
+			git.add().addFilepattern(".").call();
+			git.commit().setMessage("Auto Generated Template").call();
 
 			CredentialsProvider crdn = new UsernamePasswordCredentialsProvider(authtoken, "");
 			PushCommand pc = git.push();
 
 			pc.setCredentialsProvider(crdn).setForce(true).setRemote(remoteRepoUrl).setPushAll();
-			pc.call().iterator();
+			Iterator<PushResult> pushResult = pc.call().iterator();
 
+			return pushResult;
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			throw ex;
-		} finally {
+		} finally { 
 			try {
-				FileUtils.deleteDirectory(file);
+				FileUtils.deleteDirectory(destTemplatePath);
 			} catch (IOException ex) {
 				throw ex;
 			}
