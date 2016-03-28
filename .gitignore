@@ -1,3 +1,6 @@
+#bin
+bin
+
 #libs
 libs
 
@@ -10,9 +13,12 @@ libs
 # Classpath
 .classpath
 
+# Config properties
+config.properties
 
 # Logs
 logs
+
 *.log
 npm-debug.log*
 
