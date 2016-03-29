@@ -1,5 +1,6 @@
 /**
  * Vivek Patani {FlipSwitch}
+s
  * GitConfigurationBeanTest.java
  * {Algorithms 0.: Living in Beta}
  */
@@ -52,6 +53,24 @@ public class GitConfigurationBeanTest {
 	@Test
 	public void createRemoteReposTestWithNoName() throws Exception{
 		String remoteReposName = "";
+		
+		//To Mock the method and check the return status
+		when(gitConfigurationBean.createRemoteRepos(remoteReposName)).thenReturn(201);
+		
+		//Verify what executed was correct
+		assertEquals(gitConfigurationBean.createRemoteRepos(remoteReposName), 201);
+		
+		//Verify whether if the method even ran or not at all
+		verify(gitConfigurationBean, atLeastOnce()).createRemoteRepos(remoteReposName);
+		
+		//To verify the calling not more than once for one createRemoteRepos
+		//Put 2 to verify, the test should fail on any input apart from 1
+		verify(gitConfigurationBean, times(1)).createRemoteRepos(remoteReposName);
+	}
+	
+	@Test
+	public void pushRemoteReposTestWithName() throws Exception{
+		String remoteReposName = "Sujeet";
 		
 		//To Mock the method and check the return status
 		when(gitConfigurationBean.createRemoteRepos(remoteReposName)).thenReturn(201);

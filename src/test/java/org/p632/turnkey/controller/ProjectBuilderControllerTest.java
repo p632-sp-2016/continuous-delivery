@@ -4,6 +4,8 @@
  * {Algorithms 0.: Living in Beta}
  */
 package org.p632.turnkey.controller;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -17,6 +19,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.p632.turnkey.model.TemplateModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
@@ -68,6 +71,17 @@ public class ProjectBuilderControllerTest {
 							.andExpect(jsonPath("$", Matchers.equalTo((result))));
 	}
 	
+	
+	@Test
+	public void createTemplateMockTest() throws Exception {
+		
+		TemplateModel templateModel = new TemplateModel();
+		templateModel.setArtifact("Sujeet");
+		
+		mockMvc.perform(post("/projectbuilder/buildTemplate")
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON));
+	}
 	/**
 	 * @throws java.lang.Exception
 	 */
