@@ -50,7 +50,9 @@ public class ProjectBuilderBean {
 		try {
 			serverPath = serverPath.replace(".", File.separator);
 			Resource resource = resourceLoader.getResource("file:"+ serverPath +"/dependency.xml");
+			
 			File xmlFile = resource.getFile();
+			
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			Document doc = dBuilder.parse(xmlFile);
@@ -90,7 +92,12 @@ public class ProjectBuilderBean {
 			PrepareDependencyXml(templateModel.getDependencyList(),pom);
 			
 			xml = xmlMapper.writeValueAsString(pom);
-			PrintWriter out = new PrintWriter("C:\\xml\\Pom.xml");
+			
+			Resource resource = resourceLoader.getResource("file:"+ serverPath +"/Pom.xml");			
+			File xmlFile = resource.getFile();
+			String filePath = xmlFile.getAbsolutePath();
+			
+			PrintWriter out = new PrintWriter( filePath);
 			out.println( xml );
 			out.close();			
 			
@@ -98,6 +105,9 @@ public class ProjectBuilderBean {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
