@@ -44,13 +44,17 @@ public class ProjectBuilderBean {
 	@Value("${test.serverPath}")
 	private String serverPath;
 
+	@Value("${test.templatePath}")
+	private String templatePath;
+	
 	public List<String> getDependencyList() {
 		List<String> listDeps = new ArrayList<String>();
 
 		try {
 			serverPath = serverPath.replace(".", File.separator);
 			Resource resource = resourceLoader.getResource("file:"+ serverPath +"/dependency.xml");
-			
+			//Resource resource = resourceLoader.getResource("file:"+ serverPath +"/projectTemplate/pom.xml");
+			//serverPath = serverPath.replace(".", File.separator);
 			File xmlFile = resource.getFile();
 			
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -79,21 +83,22 @@ public class ProjectBuilderBean {
 	public void generatePom(TemplateModel templateModel)
 	{    	
     	ObjectMapper xmlMapper = new XmlMapper();
-    	String xml;
+    	String xml;    	
+		
 		try {
 			Pom pom = new Pom();
 			pom.artifactId = templateModel.getArtifact();
 			pom.groupId = templateModel.getProjectGroup();
 			pom.packaging = templateModel.getPackagingType();
-			// todo
 			pom.parent.groupId = templateModel.getParentProjectGroup();
-			// todo
 			pom.parent.artifactId = templateModel.getParentArtifact();
 			PrepareDependencyXml(templateModel.getDependencyList(),pom);
 			
 			xml = xmlMapper.writeValueAsString(pom);
 			
-			Resource resource = resourceLoader.getResource("file:"+ serverPath +"/Pom.xml");			
+			serverPath = serverPath.replace(".", File.separator);
+			templatePath = templatePath.replace(".", File.separator);
+			Resource resource = resourceLoader.getResource("file:" + templatePath +"/pom.xml");			
 			File xmlFile = resource.getFile();
 			String filePath = xmlFile.getAbsolutePath();
 			

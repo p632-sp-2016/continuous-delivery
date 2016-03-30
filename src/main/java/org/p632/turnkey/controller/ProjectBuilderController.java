@@ -40,6 +40,7 @@ public class ProjectBuilderController {
 
 		int returnStatus = gitConfigurationBean.createRemoteRepos(templateModel.getArtifact());
 		if (returnStatus == 201) {
+			builderBean.generatePom(templateModel);
 			gitConfigurationBean.pushLocalRepos(templateModel.getArtifact());
 			templateModel.setReturnMsg("success");
 		}else{
@@ -47,9 +48,6 @@ public class ProjectBuilderController {
 			return new ResponseEntity<TemplateModel>(templateModel,HttpStatus.BAD_REQUEST);
 		}
 				
-		
-		builderBean.generatePom(templateModel);
-		
 		return new ResponseEntity<TemplateModel>(templateModel,HttpStatus.OK);
 	}
 }
