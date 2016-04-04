@@ -13,5 +13,5 @@ public class Parent {
     public String artifactId = "def_dep_parent";
     
     @JacksonXmlProperty(localName = "version")
-    public String version = "1.0.0";
+    public String version = "LATEST";
 }

@@ -23,6 +23,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 /**
@@ -49,7 +50,7 @@ public class ProjectBuilderBean {
 			File xmlFile = resource.getFile();
 			
 			ObjectMapper xmlMapper = new XmlMapper();
-			String xml = Utilities.GetAllLines(xmlFile);
+			String xml = Utilities.GetAllLines(xmlFile.getAbsolutePath());
 			xml = xml.replace("\r\n", "");
 			xml = xml.replace("\t", "");
 			DependencyList knownDependencies = xmlMapper.readValue(xml, DependencyList.class);	
@@ -69,6 +70,7 @@ public class ProjectBuilderBean {
 	public void generatePom(TemplateModel templateModel)
 	{    	
     	ObjectMapper xmlMapper = new XmlMapper();
+    	xmlMapper.enable(SerializationFeature.INDENT_OUTPUT);
     	String xml;    	
 		
 		try {
@@ -112,7 +114,7 @@ public class ProjectBuilderBean {
 			File xmlFile = resource.getFile();			
 			ObjectMapper xmlMapper = new XmlMapper();
 			
-			String xml = Utilities.GetAllLines(xmlFile);
+			String xml = Utilities.GetAllLines(xmlFile.getAbsolutePath());
 			xml = xml.replace("\r\n", "");
 			xml = xml.replace("\t", "");
 			DependencyList knownDependencies = xmlMapper.readValue(xml, DependencyList.class);		
