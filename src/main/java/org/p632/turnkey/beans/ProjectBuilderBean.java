@@ -8,18 +8,11 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.p632.turnkey.helpers.Utilities;
 import org.p632.turnkey.model.TemplateModel;
 import org.p632.turnkey.pom.Dependency;
@@ -53,26 +46,19 @@ public class ProjectBuilderBean {
 		try {
 			serverPath = serverPath.replace(".", File.separator);
 			Resource resource = resourceLoader.getResource("file:"+ serverPath +"/dependency.xml");
-			//Resource resource = resourceLoader.getResource("file:"+ serverPath +"/projectTemplate/pom.xml");
-			//serverPath = serverPath.replace(".", File.separator);
 			File xmlFile = resource.getFile();
 			
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document doc = dBuilder.parse(xmlFile);
-			NodeList nList = doc.getElementsByTagName("dependency");
-
-			for (int temp = 0; temp < nList.getLength(); temp++) {
-
-				Node nNode = nList.item(temp);
-
-				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-
-					Element eElement = (Element) nNode;
-					String dependency = eElement.getElementsByTagName("artifactId").item(0).getTextContent();
-					listDeps.add(dependency);
-				}
-			}
+			ObjectMapper xmlMapper = new XmlMapper();
+			String xml = Utilities.GetAllLines(xmlFile);
+			xml = xml.replace("\r\n", "");
+			xml = xml.replace("\t", "");
+			DependencyList knownDependencies = xmlMapper.readValue(xml, DependencyList.class);	
+			
+			for (Dependency knownDependency : knownDependencies.dependency )
+			{					
+				listDeps.add(knownDependency.artifactId);
+			}				
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
