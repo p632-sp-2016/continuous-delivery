@@ -10,12 +10,30 @@ public class TemplateModel implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private String projectGroup;
+	private String parentProjectGroup;
+	private String parentArtifact;
 	private String artifact;
 	private String packageName;
 	private ArrayList<String> dependencyList = new ArrayList<String>();
 	private String packagingType;
 	private String returnMsg;
 
+	public String getParentProjectGroup() {
+		return parentProjectGroup;
+	}
+
+	public void setParentProjectGroup(String parentProjectGroup) {
+		this.parentProjectGroup = parentProjectGroup;
+	}
+	
+	public String getParentArtifact() {
+		return parentArtifact;
+	}
+
+	public void setParentArtifact(String parentArtifact) {
+		this.parentArtifact = parentArtifact;
+	}
+	
 	public String getProjectGroup() {
 		return projectGroup;
 	}

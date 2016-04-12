@@ -97,7 +97,7 @@ public class GitConfigurationBean {
 			Thread.sleep(2000);
 
 			destTemplatePath.mkdirs();
-
+			
 			String remoteRepoUrl = remoteUrl + "/" + username + "/" + remoteReposName + ".git";
 			Git git = Git.init().setDirectory(destTemplatePath).call();
 
