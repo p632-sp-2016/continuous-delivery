@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 
+import org.p632.turnkey.helpers.Constants;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -19,8 +21,11 @@ import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.PushResult;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
+import org.p632.turnkey.model.TemplateModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Component
 public class GitConfigurationBean {
@@ -45,7 +50,8 @@ public class GitConfigurationBean {
 
 	private HttpEntity entity;
 	private int statusCode;
-
+	final Logger logger = LoggerFactory.getLogger(GitConfigurationBean.class);
+	
 	/**
 	 * Creates remote repository on github.
 	 * 
@@ -54,7 +60,8 @@ public class GitConfigurationBean {
 	 * @throws Exception
 	 */
 	public int createRemoteRepos(String remoteReposName) throws Exception {
-		remoteReposName = (remoteReposName == null) ? "Default" : remoteReposName;
+		remoteReposName = (remoteReposName == null) ? Constants.DEFAULT_REPOSITORY : remoteReposName;
+		
 		try {
 
 			HttpPost post = new HttpPost(gitApi);
@@ -67,15 +74,11 @@ public class GitConfigurationBean {
 			statusCode = response.getStatusLine().getStatusCode();
 
 			entity = response.getEntity();
-		} catch (Exception ex) {
-			throw ex;
-		} finally {
-			try {
-				EntityUtils.consume(entity);
-			} catch (IOException ex) {
-				throw ex;
-			}
-		}
+			EntityUtils.consume(entity);
+			
+		} catch (Exception ex) { 
+			logger.error("Cannot create remote repository", ex);
+		} 
 		return statusCode;
 	}
 
@@ -85,25 +88,42 @@ public class GitConfigurationBean {
 	 * @param remoteReposName
 	 * @throws Exception
 	 */
-	public Iterator<PushResult> pushLocalRepos(String remoteReposName) throws Exception {
+	public Iterator<PushResult> pushLocalRepos(TemplateModel templateModel) throws Exception {
+		String remoteReposName = templateModel.getArtifact();
 		remoteReposName = (remoteReposName == null) ? "Default" : remoteReposName;
-
+		
 		serverPath = serverPath.replace(".", File.separator);
 		templatePath = templatePath.replace(".", File.separator);
 		File destTemplatePath = new File(serverPath + File.separator + "temp");
 		File srcTemplatePath  = new File(templatePath);
+		Iterator<PushResult> pushResult = null;
+		
 		try {
 
 			Thread.sleep(2000);
 
 			destTemplatePath.mkdirs();
-			
+
 			String remoteRepoUrl = remoteUrl + "/" + username + "/" + remoteReposName + ".git";
 			Git git = Git.init().setDirectory(destTemplatePath).call();
 
 			Repository repository = FileRepositoryBuilder.create(new File(destTemplatePath.getAbsolutePath(), ".git"));
 			FileUtils.copyDirectory(srcTemplatePath,new File(repository.getDirectory().getParent()));
 		   
+			String srcMainPath = (destTemplatePath.getAbsoluteFile()+Constants.MAIN_JAVA).replace(".", File.separator); 
+			String srcTestPath = (destTemplatePath.getAbsoluteFile()+Constants.TEST_JAVA).replace(".", File.separator);
+			
+			String temp = srcMainPath+templateModel.getPackageName();
+			String temp1 = srcTestPath+templateModel.getPackageName();
+			
+			File reverseDomainFileMain = new File(temp.replace(".", File.separator));
+			File reverseDomainFileTest = new File(temp1.replace(".", File.separator));
+			reverseDomainFileMain.mkdirs();
+			reverseDomainFileTest.mkdirs();
+			
+			FileUtils.moveFileToDirectory(new File(srcMainPath.replace(".", File.separator)+Constants.MAIN_JAVA_FILE), reverseDomainFileMain,false);
+			FileUtils.moveFileToDirectory(new File(srcTestPath.replace(".", File.separator)+Constants.TEST_JAVA_FILE), reverseDomainFileTest,false);
+			
 			git.add().addFilepattern(".").call();
 			git.commit().setMessage("Auto Generated Template").call();
 
@@ -111,20 +131,14 @@ public class GitConfigurationBean {
 			PushCommand pc = git.push();
 
 			pc.setCredentialsProvider(crdn).setForce(true).setRemote(remoteRepoUrl).setPushAll();
-			Iterator<PushResult> pushResult = pc.call().iterator();
+			pushResult = pc.call().iterator();
 
-			return pushResult;
+			FileUtils.deleteDirectory(destTemplatePath);
+			
 		} catch (Exception ex) {
-			ex.printStackTrace();
-			throw ex;
-		} finally { 
-			try {
-				FileUtils.deleteDirectory(destTemplatePath);
-			} catch (IOException ex) {
-				throw ex;
-			}
-		}
-
+			
+			logger.error("Cannot push template to git repository", ex);
+		} 
+		return pushResult;
 	}
-
 }

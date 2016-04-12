@@ -40,7 +40,7 @@ public class ProjectBuilderController {
 		int returnStatus = gitConfigurationBean.createRemoteRepos(templateModel.getArtifact());
 		if (returnStatus == 201) {
 			builderBean.generatePom(templateModel);
-			gitConfigurationBean.pushLocalRepos(templateModel.getArtifact());
+			gitConfigurationBean.pushLocalRepos(templateModel);
 			templateModel.setReturnMsg("success");
 		}else{
 			templateModel.setReturnMsg("failure");
