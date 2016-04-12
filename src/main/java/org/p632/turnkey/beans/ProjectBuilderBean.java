@@ -50,7 +50,7 @@ public class ProjectBuilderBean {
 			File xmlFile = resource.getFile();
 			
 			ObjectMapper xmlMapper = new XmlMapper();
-			String xml = Utilities.GetAllLines(xmlFile.getAbsolutePath());
+			String xml = Utilities.getAllLines(xmlFile.getAbsolutePath());
 			xml = xml.replace("\r\n", "");
 			xml = xml.replace("\t", "");
 			DependencyList knownDependencies = xmlMapper.readValue(xml, DependencyList.class);	
@@ -80,7 +80,7 @@ public class ProjectBuilderBean {
 			pom.packaging = templateModel.getPackagingType();
 			pom.parent.groupId = templateModel.getParentProjectGroup();
 			pom.parent.artifactId = templateModel.getParentArtifact();
-			PrepareDependencyXml(templateModel.getDependencyList(),pom);
+			prepareDependencyXml(templateModel.getDependencyList(),pom);
 			
 			xml = xmlMapper.writeValueAsString(pom);
 			
@@ -94,19 +94,16 @@ public class ProjectBuilderBean {
 			out.println( xml );
 			out.close();			
 			
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
+		} catch (JsonProcessingException e) {			
 			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+		} catch (FileNotFoundException e) {		
 			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} catch (IOException e) {			
 			e.printStackTrace();
 		}
 	}
 	
-	private void PrepareDependencyXml(ArrayList<String> dependencyList, Pom pom)
+	private void prepareDependencyXml(ArrayList<String> dependencyList, Pom pom)
 	{		
 		try {
 			serverPath = serverPath.replace(".", File.separator);
@@ -114,7 +111,7 @@ public class ProjectBuilderBean {
 			File xmlFile = resource.getFile();			
 			ObjectMapper xmlMapper = new XmlMapper();
 			
-			String xml = Utilities.GetAllLines(xmlFile.getAbsolutePath());
+			String xml = Utilities.getAllLines(xmlFile.getAbsolutePath());
 			xml = xml.replace("\r\n", "");
 			xml = xml.replace("\t", "");
 			DependencyList knownDependencies = xmlMapper.readValue(xml, DependencyList.class);		

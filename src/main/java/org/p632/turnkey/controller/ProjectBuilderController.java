@@ -1,6 +1,5 @@
 package org.p632.turnkey.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.p632.turnkey.beans.GitConfigurationBean;
