@@ -16,6 +16,7 @@ http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 		<property name="location">
 			<value>file:/u/kspace/students/spring2016/FrancisCD/config.properties</value>
 		</property>
+		
 	</bean>
 
 </beans>
