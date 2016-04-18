@@ -20,21 +20,26 @@ public class BambooConfigurationBean {
 
 	public void processBuild(String templateName) {
 		serverPath = serverPath.replace(".", File.separator);
-		String[] buildArgs = { "/bin/bash",templateName, serverPath + Constants.BAMBOO_SCRIPT,
-				Constants.GIT_REPOSITORY};
-        Process process;
+		String[] buildArgs = { "/bin/bash", serverPath + "/"+Constants.BAMBOO_SCRIPT, templateName,
+				Constants.GIT_REPOSITORY };
+		Process process;
 		try {
 			ProcessBuilder processBuilder = new ProcessBuilder(buildArgs);
 			processBuilder.directory(new File(serverPath));
-			process=processBuilder.start();
+			process = processBuilder.start();
 
 			BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
 			String line;
-			logger.info("Reading shells script");
 			while ((line = br.readLine()) != null) {
-			    logger.info(line);
+				logger.info(line);
 			}
-			
+
+			BufferedReader brErr = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+			String lineError;
+			while ((lineError = brErr.readLine()) != null) {
+				logger.error(lineError);
+			}
+
 			logger.debug("Bamboo build completed succesfully");
 		} catch (Exception ex) {
 			logger.error("Error during Bamboo build configuration", ex);
