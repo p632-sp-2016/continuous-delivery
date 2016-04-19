@@ -57,9 +57,9 @@ public class GitConfigurationBean {
 	 * 
 	 * @param remoteReposName
 	 * @return
-	 * @throws Exception
+	 * 
 	 */
-	public int createRemoteRepos(String remoteReposName) throws Exception {
+	public int createRemoteRepos(String remoteReposName) {
 		remoteReposName = (remoteReposName == null) ? Constants.DEFAULT_REPOSITORY : remoteReposName;
 		
 		try {
@@ -88,7 +88,7 @@ public class GitConfigurationBean {
 	 * @param remoteReposName
 	 * @throws Exception
 	 */
-	public Iterator<PushResult> pushLocalRepos(TemplateModel templateModel) throws Exception {
+	public String pushLocalRepos(TemplateModel templateModel){
 		String remoteReposName = templateModel.getArtifact();
 		remoteReposName = (remoteReposName == null) ? "Default" : remoteReposName;
 		
@@ -97,6 +97,7 @@ public class GitConfigurationBean {
 		File destTemplatePath = new File(serverPath + File.separator + "temp");
 		File srcTemplatePath  = new File(templatePath);
 		Iterator<PushResult> pushResult = null;
+		String returnResult = null;
 		
 		try {
 
@@ -113,8 +114,8 @@ public class GitConfigurationBean {
 			String srcMainPath = (destTemplatePath.getAbsoluteFile()+Constants.MAIN_JAVA).replace(".", File.separator); 
 			String srcTestPath = (destTemplatePath.getAbsoluteFile()+Constants.TEST_JAVA).replace(".", File.separator);
 			
-			String temp = srcMainPath+templateModel.getPackageName();
-			String temp1 = srcTestPath+templateModel.getPackageName();
+			String temp = srcMainPath+templateModel.getProjectGroup();
+			String temp1 = srcTestPath+templateModel.getProjectGroup();
 			
 			File reverseDomainFileMain = new File(temp.replace(".", File.separator));
 			File reverseDomainFileTest = new File(temp1.replace(".", File.separator));
@@ -132,13 +133,21 @@ public class GitConfigurationBean {
 
 			pc.setCredentialsProvider(crdn).setForce(true).setRemote(remoteRepoUrl).setPushAll();
 			pushResult = pc.call().iterator();
-
-			FileUtils.deleteDirectory(destTemplatePath);
 			
+			  if(pushResult.hasNext()){
+				  returnResult = pushResult.next().getRemoteUpdate("refs/heads/master").getStatus().toString();
+		          }
 		} catch (Exception ex) {
 			
 			logger.error("Cannot push template to git repository", ex);
 		} 
-		return pushResult;
+		finally{
+			try {
+				FileUtils.deleteDirectory(destTemplatePath);
+			} catch (IOException ex) {
+				logger.error("Temporary folder cannot be deleted ", ex);
+			}
+		}
+		return returnResult;
 	}
 }
