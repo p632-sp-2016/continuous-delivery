@@ -10,6 +10,7 @@
 <meta name="author" content="">
 
 <link rel="stylesheet" type="text/css" href="libs/bootstrap/dist/css/bootstrap.min.css" />
+<!--<link rel="stylesheet" type="text/css" href="css/loading-overlay.css" />-->
 
 <style>
 .well {
@@ -27,6 +28,19 @@ footer {
 	text-align: center;
 	padding: 5px;
 }
+
+.vertical-align-center {
+    /* To center vertically */
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.modal
+{
+position: fixed;
+top: 30%;
+left:10%;
+}
 </style>
 </head>
 
@@ -42,8 +56,8 @@ footer {
 			</h1>
 		</div>
 	</header>
-	<section class="container">
-
+	<section class="container">		
+		
 		<div id="successAlert" style="display: none;"
 			class="alert alert-success alert-dismissible" role="alert">
 			<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span>
@@ -63,6 +77,19 @@ footer {
 
 			</div>
 		</div>
+		<div class="container-fluid">
+			<div class="modal fade" id="myModal" role="dialog">
+				<div class="modal-dialog ">
+				  <div class="modal-dialog modal-sm">
+						<div class="modal-body">
+							<div class="col-md-5">	
+									<img src="images/loading.gif">
+							</div>
+						</div>        
+					</div>      
+				</div>
+			</div>
+		</div>
 		<div id="failureAlert" style="display: none;"
 			class="alert alert-danger alert-dismissible" role="alert">
 			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -77,11 +104,9 @@ footer {
 	<footer class="well"> &copy; 2016-2017 </footer>
 
 	<script src="libs/jquery/dist/jquery.js"></script>
-	<script src="js/loadingoverlay.js"></script>	
-	<script
-		src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.js"></script>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.js"></script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.js"></script>	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.js"></script>
 	<script src="app/app.js"></script>
 	<script src="app/config.js"></script>
 	<script src="app/controller/templateController.js"></script>

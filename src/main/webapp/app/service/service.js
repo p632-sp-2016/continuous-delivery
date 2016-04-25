@@ -7,14 +7,21 @@ ciIntegratorApp.service('IntegratorService', [
 			this.createTemplate = function(templateData) {
 				var d = $q.defer();
 				$log.debug(templateData);
-				$.LoadingOverlay("show");
+				//$.LoadingOverlay("show");
+				//$('#target').loadingOverlay();
+				$('#myModal').modal('show');
 				$http.post('integrator-rest/projectbuilder/buildTemplate/',
 						templateData).success(function(response, status) {
 					d.resolve(response);
 					$log.debug(status);
-					$.LoadingOverlay("hide");
+					
+					//$('#target').loadingOverlay('remove');
+					//$.LoadingOverlay("hide");
+					$('#myModal').modal('hide');
 				}).error(function() {
-					$.LoadingOverlay("hide");
+					$('#myModal').modal('hide');
+					//$.LoadingOverlay("hide");
+					//$('#target').loadingOverlay('remove');
 					d.reject();
 				});
 
