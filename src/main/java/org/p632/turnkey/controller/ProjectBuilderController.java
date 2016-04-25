@@ -2,6 +2,7 @@ package org.p632.turnkey.controller;
 
 import java.util.List;
 
+import org.p632.turnkey.beans.BambooConfigurationBean;
 import org.p632.turnkey.beans.GitConfigurationBean;
 import org.p632.turnkey.beans.ProjectBuilderBean;
 import org.p632.turnkey.model.TemplateModel;
@@ -27,6 +28,9 @@ public class ProjectBuilderController {
 
 	@Autowired
 	private GitConfigurationBean gitConfigurationBean;
+	
+	@Autowired
+	private BambooConfigurationBean bambooConfigurationBean;
 
 	@RequestMapping(value = "/dependencyList")
 	public ResponseEntity<?> loadDependencyList(ModelMap model) {
@@ -41,6 +45,7 @@ public class ProjectBuilderController {
 		if (returnStatus == 201) {
 			builderBean.generatePom(templateModel);
 			gitConfigurationBean.pushLocalRepos(templateModel);
+			bambooConfigurationBean.processBuild(templateModel.getArtifact());
 			templateModel.setReturnMsg("success");
 		}else{
 			templateModel.setReturnMsg("failure");
