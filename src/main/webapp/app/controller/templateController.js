@@ -67,7 +67,7 @@ ciIntegratorApp
 														$rootScope.gitUrl = "https://github.com/p632-sp-2016/continuous-delivery/"
 																+ $rootScope.projectName
 																+ ".git";
-														$rootScope.bambooUrl = "https://http://tintin.cs.indiana.edu:8094/browse/"
+														$rootScope.bambooUrl = "http://tintin.cs.indiana.edu:8094/browse/"
 																+ $rootScope.projectName;
 														$scope.template = {};
 
