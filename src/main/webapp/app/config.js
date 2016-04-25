@@ -3,10 +3,12 @@ ciIntegratorApp.config([
 		'$urlRouterProvider',
 		'$httpProvider',
 		'$logProvider',
-		function($stateProvider, $urlRouterProvider, $httpProvider,$logProvider) {
-
+		function($stateProvider, $urlRouterProvider, $httpProvider,
+				$logProvider) {
 
 			$urlRouterProvider.otherwise('/createTemplate');
+			// register interceptors
+			$httpProvider.interceptors.push('ciIntegratorInterceptor');
 
 			$stateProvider
 
@@ -15,11 +17,6 @@ ciIntegratorApp.config([
 				templateUrl : 'partials/createTemplate.html',
 				controller : 'templateController'
 
-			}).state('projectDetails', {
-				url : '/projectDetails.html',
-				templateUrl : 'projectDetails.html',
-				controller : 'templateDetailController'
-
 			})
-			
+
 		} ]);
