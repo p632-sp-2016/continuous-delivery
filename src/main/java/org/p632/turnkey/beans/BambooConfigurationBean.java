@@ -10,6 +10,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+/**
+ * Component responsible for building the teamplate project on Bamboo.
+ * 
+ * @author Rohit Surve
+ *
+ */
 @Component
 public class BambooConfigurationBean {
 
@@ -18,7 +24,15 @@ public class BambooConfigurationBean {
 
 	final Logger logger = LoggerFactory.getLogger(BambooConfigurationBean.class);
 
-	public void processBuild(String templateName) {
+	/**
+	 * This method executes the bamboo shell script which in turn creates and builds plans
+	 * for the template project.Template project name and git repository url is provided as an input 
+	 * to the shell script.
+	 * 
+	 * @param templateName
+	 * @throws Exception
+	 */
+	public void processBuild(String templateName) throws Exception {
 		serverPath = serverPath.replace(".", File.separator);
 		String[] buildArgs = { "/bin/bash", serverPath + "/"+Constants.BAMBOO_SCRIPT, templateName,
 				Constants.GIT_REPOSITORY };
@@ -43,6 +57,7 @@ public class BambooConfigurationBean {
 			logger.debug("Bamboo build completed succesfully");
 		} catch (Exception ex) {
 			logger.error("Error during Bamboo build configuration", ex);
+			throw ex;			
 		}
 	}
 
