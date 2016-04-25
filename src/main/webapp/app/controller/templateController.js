@@ -23,8 +23,8 @@ ciIntegratorApp
 							});
 
 							$scope.addDependency = function() {
-								if (this.template.dependency != null
-										|| this.template.dependency != " ") {
+								if (this.template.dependency !== null
+										|| this.template.dependency !== " ") {
 									$scope.dependencyLoadList
 											.push(this.template.dependency);
 								}
@@ -33,7 +33,7 @@ ciIntegratorApp
 							}
 							$scope.removeDependency = function() {
 
-								if ($scope.template.dependencyList != null
+								if ($scope.template.dependencyList !== null
 										&& $scope.template.dependencyList.length > 0) {
 
 									$.each($scope.template.dependencyList,
@@ -60,7 +60,7 @@ ciIntegratorApp
 										.createTemplate(templateData)
 										.then(
 												function(data) {
-													if (data.returnMsg == "success") {
+													if (data.returnMsg === "success") {
 														console.log("sucesss")
 														$rootScope.displayingMsgType = "success";
 														$rootScope.displayingMsgContent = "Template Created Succesfully";
