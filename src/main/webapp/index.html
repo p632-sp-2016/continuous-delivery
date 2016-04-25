@@ -12,91 +12,74 @@
 <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
 
 <style>
-.currently-loading {
-	opacity: 0.45;
-	-moz-opacity: 0.45;
-	filter: alpha(opacity = 45);
-	width: 100%;
-	height: 100%;
-	background-attachment: fixed;
-	background-repeat: no-repeat;
-	background-position: center center;
-	background: rgb(173, 199, 239);
-	z-index: 5000;
+.well {
+	background-color: #000;
 }
 
-.centeredImage {
+.header-style {
+	font-family: "Varela Round", sans-serif;
+	color: #eee;
+	border-top: 4px solid #6db33f;
+}
+
+footer {
+	background-color: black;
+	color: white;
+	clear: both;
 	text-align: center;
-	margin-top: 0px;
-	margin-bottom: 0px;
-	padding: 0px;
+	padding: 5px;
 }
 </style>
 </head>
 
 <body>
+	<header>
+		<div class=" container-fluid header-style well">
+			<h1 style="font-color: #fff">
+				<span style="text-transform: uppercase; font-size: 0.8em;">UITS
+					Project Generator</span> <small
+					style="text-transform: none; font-size: 50%;" class="hidden-xs">bootstrap
+					your application now</small> <img src="images/uits-img.png"
+					style="height: 1em;" class="img-responsive img-rounded pull-right" />
+			</h1>
+		</div>
+	</header>
+	<section class="container">
 
-	<div ng-controller="progressIndicator">
-		<div ng-show="isDataLoaded.dataLoaded">
-			<div id="overlay" class="currently-loading centeredImage"
-				style="position: absolute">
-				<img src="images/loading.gif" alt="Be patient..." align="middle"
-					style="margin-top: 10em !important;" />
+		<div id="successAlert" style="display: none;"
+			class="alert alert-success alert-dismissible" role="alert">
+			<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span>
+			<button type="button" class="close"
+				onclick="$('#successAlert').hide()" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			<span ng-bind="displayingMsgContent"></span>&nbsp; [<a href="#"
+				onclick="$('#successContent').toggle();">Details</a>]<br />
+			<br />
+
+			<div id="successContent"
+				style="height: 100px; overflow-y: scroll; display: none;">
+				Project Name : <span ng-bind="projectName"></span><br /> <br />
+				Git Project Repository : <a href="">{{gitUrl}}</a><br /> <br />
+				Bamboo Plan : <a href="">{{bambooUrl}}</a>
+
 			</div>
 		</div>
-	</div>
-
-	<!-- Navigator for the website, Home is active. Once finalised override -->
-	<nav class="navbar navbar-inverse">
-
-		<!-- To cover the complete width -->
-		<div class="container-fluid">
-			<!-- Brand and toggle get grouped for better mobile display -->
-			<div class="container">
-				<div class="navbar-header">
-					<a class="navbar-brand" href="#">UITS Project Gen 0.9</a>
-				</div>
-				<!-- Collect the nav links, forms, and other content for toggling -->
-				<div class="collapse navbar-collapse"
-					id="bs-example-navbar-collapse-1">
-					<ul class="nav navbar-nav navbar-right">
-						<li class="active"><a href="#">Home</a></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</nav>
-
-	<!-- MAIN CONTENT -->
-	<div class="container">
-		<div
-			ng-show=" !isUndefined(displayingMsgType) && displayingMsgType=='success' ">
-			<div class="alert alert-success alert-dismissible" role="alert">
-				<button type="button" class="close" data-dismiss="alert"
-					aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-				{{displayingMsgContent}}
-			</div>
-		</div>
-		<div
-			ng-show=" !isUndefined(displayingMsgType) && displayingMsgType=='failure' ">
-			<div class="alert alert-danger alert-dismissible" role="alert">
-				<button type="button" class="close" data-dismiss="alert"
-					aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-				{{displayingMsgContent}}
-			</div>
+		<div id="failureAlert" style="display: none;"
+			class="alert alert-danger alert-dismissible" role="alert">
+			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+			<button type="button" class="close"
+				onclick="$('#failureAlert').hide()" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			<span ng-bind="displayingMsgContent"></span>
 		</div>
 		<div ui-view></div>
-	</div>
+	</section>
+	<footer class="well"> &copy; 2016-2017 </footer>
 
-
-
-	<!--Scripts For Development Purpose-->
 	<script src="js/jquery-1.12.0.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
+	<script src="js/loadingoverlay.js"></script>
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.js"></script>
 	<script

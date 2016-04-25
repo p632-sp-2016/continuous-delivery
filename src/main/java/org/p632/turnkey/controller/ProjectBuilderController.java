@@ -5,6 +5,7 @@ import java.util.List;
 import org.p632.turnkey.beans.BambooConfigurationBean;
 import org.p632.turnkey.beans.GitConfigurationBean;
 import org.p632.turnkey.beans.ProjectBuilderBean;
+import org.p632.turnkey.helpers.Constants;
 import org.p632.turnkey.model.TemplateModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,12 +33,26 @@ public class ProjectBuilderController {
 	@Autowired
 	private BambooConfigurationBean bambooConfigurationBean;
 
+	/**
+	 * This method loads the dependency from the file on the server
+	 * 
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/dependencyList")
 	public ResponseEntity<?> loadDependencyList(ModelMap model) {
 		List<String> dependencyList = builderBean.getDependencyList();
 		return new ResponseEntity<List<String>>(dependencyList, HttpStatus.OK);
 	}
 
+	/**
+	 * This method is responsible for creating a template project,configuring the project on git and
+	 * building the project on bamboo.
+	 * 
+	 * @param templateModel
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/buildTemplate")
 	public ResponseEntity<?> createTemplate(@RequestBody TemplateModel templateModel) throws Exception {
 
@@ -46,9 +61,9 @@ public class ProjectBuilderController {
 			builderBean.generatePom(templateModel);
 			gitConfigurationBean.pushLocalRepos(templateModel);
 			bambooConfigurationBean.processBuild(templateModel.getArtifact());
-			templateModel.setReturnMsg("success");
+			templateModel.setReturnMsg(Constants.SUCCESS);
 		}else{
-			templateModel.setReturnMsg("failure");
+			templateModel.setReturnMsg(Constants.FAILURE);
 			return new ResponseEntity<TemplateModel>(templateModel,HttpStatus.BAD_REQUEST);
 		}
 				
