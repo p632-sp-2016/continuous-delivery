@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+
 import org.p632.turnkey.helpers.Constants;
 
 import org.apache.commons.io.FileUtils;
@@ -11,6 +14,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
@@ -48,6 +52,15 @@ public class GitConfigurationBean {
 	@Value("${test.templatePath}")
 	private String templatePath;
 
+	@Value("${test.orginizationName}")
+	private String orginizationName;
+	
+	@Value("${test.teamId}")
+	private int teamId;
+	
+	@Value("${test.createdRepoUrl}")
+	private String createdRepoUrl;
+
 	private HttpEntity entity;
 	private int statusCode;
 	final Logger logger = LoggerFactory.getLogger(GitConfigurationBean.class);
@@ -63,11 +76,14 @@ public class GitConfigurationBean {
 		remoteReposName = (remoteReposName == null) ? Constants.DEFAULT_REPOSITORY : remoteReposName;
 		
 		try {
-
-			HttpPost post = new HttpPost(gitApi);
+			
+			String gitApiWithOrgName = gitApi.replaceAll(":org_name", orginizationName);
+			HttpPost post = new HttpPost(gitApiWithOrgName);
 			post.setHeader("Authorization", " token " + authtoken);
 			HttpClient httpclient = new DefaultHttpClient();
-			StringEntity params = new StringEntity("{\"name\": \"" + remoteReposName + "\"} ");
+			String parameters = "{\"name\": \""+remoteReposName+"\"}";
+			
+			StringEntity params = new StringEntity(parameters);
 			post.setEntity(params);
 
 			HttpResponse response = httpclient.execute(post);
@@ -88,6 +104,7 @@ public class GitConfigurationBean {
 	 * @param remoteReposName
 	 * @throws Exception
 	 */
+	
 	public String pushLocalRepos(TemplateModel templateModel){
 		String remoteReposName = templateModel.getArtifact();
 		remoteReposName = (remoteReposName == null) ? "Default" : remoteReposName;
@@ -105,7 +122,7 @@ public class GitConfigurationBean {
 
 			destTemplatePath.mkdirs();
 
-			String remoteRepoUrl = remoteUrl + "/" + username + "/" + remoteReposName + ".git";
+			String remoteRepoUrl = remoteUrl + "/" + orginizationName + "/" + remoteReposName + ".git";
 			Git git = Git.init().setDirectory(destTemplatePath).call();
 
 			Repository repository = FileRepositoryBuilder.create(new File(destTemplatePath.getAbsolutePath(), ".git"));
@@ -150,4 +167,30 @@ public class GitConfigurationBean {
 		}
 		return returnResult;
 	}
+	
+	public int addTeamToRepo(TemplateModel templateModel){
+		String remoteReposName = templateModel.getArtifact();
+		remoteReposName = (remoteReposName == null) ? "Default" : remoteReposName;
+		HttpResponse response = null;
+		String repoToAccessUrl = createdRepoUrl.replaceAll(":teamId",""+teamId)
+								 .replaceAll(":org_name", orginizationName)
+								 .replaceAll(":repo_name", templateModel.getArtifact());
+		
+		HttpPut put = new HttpPut(repoToAccessUrl);
+		put.addHeader("Accept", "application/vnd.github.ironman-preview+json");
+		put.setHeader("Authorization", " token " + authtoken);
+		HttpClient httpclient = new DefaultHttpClient();
+		String parameters = "{\"permission\" : \"admin\" }";
+	    try{
+		StringEntity params =new StringEntity(parameters);
+	    put.setEntity(params);
+	    response = httpclient.execute(put);
+	    }catch (Exception ex) {
+			
+			logger.error("Cannot Provide access to team for newly created repository ", ex);
+		} 
+	    return response.getStatusLine().getStatusCode();
+		
+	}
+
 }
