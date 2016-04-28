@@ -129,7 +129,7 @@ public class GitConfigurationBeanTest {
 	}
 
 	@Test
-	public void pushLocalReposTest() throws Exception {
+	public void pushLocalReposTestWithName() throws Exception {
 		GitConfigurationBean spyBean = Mockito.spy(new GitConfigurationBean());
 
 		PowerMockito.mockStatic(FileUtils.class);
@@ -161,6 +161,45 @@ public class GitConfigurationBeanTest {
 
 		TemplateModel model = new TemplateModel();
 		model.setArtifact("dummy");
+		model.setProjectGroup("Dummy_grp");
+
+		Assert.assertTrue(null == spyBean.pushLocalRepos(model));
+
+	}
+	
+	@Test
+	public void pushLocalReposTestWithOutName() throws Exception {
+		GitConfigurationBean spyBean = Mockito.spy(new GitConfigurationBean());
+
+		PowerMockito.mockStatic(FileUtils.class);
+		PowerMockito.spy(Git.class);
+		PowerMockito.when(Git.init()).thenReturn(initCmd);
+		PowerMockito.when(initCmd.setDirectory(Mockito.any(File.class))).thenReturn(initCmd);
+		PowerMockito.when(initCmd.call()).thenReturn(gitPush);
+
+		Mockito.when(gitPush.add()).thenReturn(addCommand);
+		Mockito.when(addCommand.addFilepattern(Mockito.anyString())).thenReturn(addCommand);
+		;
+
+		Mockito.when(gitPush.commit()).thenReturn(commitCmd);
+		Mockito.when(commitCmd.setMessage(Mockito.anyString())).thenReturn(commitCmd);
+
+		Mockito.when(gitPush.push()).thenReturn(pushCommand);
+		Mockito.when(pushCommand.setCredentialsProvider(Mockito.any(CredentialsProvider.class)))
+				.thenReturn(pushCommand);
+		Mockito.when(pushCommand.setForce(Mockito.any(Boolean.class))).thenReturn(pushCommand);
+		Mockito.when(pushCommand.setRemote(Mockito.any(String.class))).thenReturn(pushCommand);
+		Mockito.when(pushCommand.setPushAll()).thenReturn(pushCommand);
+
+		Mockito.when(pushCommand.call()).thenReturn(itr);
+		Mockito.when(itr.iterator()).thenReturn(iter);
+
+		ReflectionTestUtils.setField(spyBean, "serverPath", "vivek");
+		ReflectionTestUtils.setField(spyBean, "remoteUrl", "vivek");
+		ReflectionTestUtils.setField(spyBean, "templatePath", "vivek");
+
+		TemplateModel model = new TemplateModel();
+		model.setArtifact(null);
 		model.setProjectGroup("Dummy_grp");
 
 		Assert.assertTrue(null == spyBean.pushLocalRepos(model));

@@ -59,14 +59,22 @@ public class ProjectBuilderController {
 		int returnStatus = gitConfigurationBean.createRemoteRepos(templateModel.getArtifact());
 		if (returnStatus == 201) {
 			builderBean.generatePom(templateModel);
-			gitConfigurationBean.pushLocalRepos(templateModel);
-			bambooConfigurationBean.processBuild(templateModel.getArtifact());
-			templateModel.setReturnMsg(Constants.SUCCESS);
+			if(gitConfigurationBean.pushLocalRepos(templateModel)=="OK"){
+				if(gitConfigurationBean.addTeamToRepo(templateModel)==204){
+					templateModel.setReturnMsg("success");
+				}
+				else{
+					templateModel.setReturnMsg("failure");
+					}
+			}else{
+				templateModel.setReturnMsg("failure");
+			}
 		}else{
-			templateModel.setReturnMsg(Constants.FAILURE);
+			templateModel.setReturnMsg("failure");
 			return new ResponseEntity<TemplateModel>(templateModel,HttpStatus.BAD_REQUEST);
 		}
 				
 		return new ResponseEntity<TemplateModel>(templateModel,HttpStatus.OK);
+
 	}
 }
