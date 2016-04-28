@@ -1,24 +1,22 @@
 ciIntegratorApp.service('IntegratorService', [
 		'$http',
 		'$log',
-		'globalData',
 		'$q',
-		function($http, $log, globalData, $q) {
+		function($http, $log, $q) {
 
 			this.createTemplate = function(templateData) {
 				var d = $q.defer();
 				$log.debug(templateData);
-				globalData.dataLoaded = true;
-				$http
-						.post('integrator-rest/projectbuilder/buildTemplate/',
-								templateData).success(
-								function(response, status) {
-									d.resolve(response);
-									$log.debug(status);
-									globalData.dataLoaded = false;
-								}).error(function() {
-							d.reject();
-						});
+				$.LoadingOverlay("show");
+				$http.post('integrator-rest/projectbuilder/buildTemplate/',
+						templateData).success(function(response, status) {
+					d.resolve(response);
+					$log.debug(status);
+					$.LoadingOverlay("hide");
+				}).error(function() {
+					$.LoadingOverlay("hide");
+					d.reject();
+				});
 
 				return d.promise;
 			};

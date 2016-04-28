@@ -1,17 +1,6 @@
 var ciIntegratorApp = angular.module('ciIntegratorApp', [ 'ui.router' ])
 
-ciIntegratorApp.service('globalData', function() {
-	return {
-		dataLoaded : false,
-		message : null
-	};
-});
 
-ciIntegratorApp.controller('progressIndicator', [ '$scope', '$state',
-		'globalData', function($scope, $state, globalData) {
-			$scope.isDataLoaded = globalData;
-
-		} ]);
 
 ciIntegratorApp.factory('ciIntegratorInterceptor', [ '$rootScope', '$location',
 		function($rootScope, $location) {
@@ -26,8 +15,7 @@ ciIntegratorApp.factory('ciIntegratorInterceptor', [ '$rootScope', '$location',
 				responseError : function(rejection) {
 					var status = rejection.status;
 					if (status != 200) {
-						$rootScope.displayingMsgType = "failure";
-						$rootScope.displayingMsgContent = rejection.statusText;
+						$rootScope.displayingMsgContent = "Server Error :" + rejection.statusText;
 					}
 
 					return rejection;

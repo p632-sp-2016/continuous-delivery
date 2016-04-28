@@ -5,8 +5,8 @@
  */
 package org.p632.turnkey.controller;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -18,7 +18,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.p632.turnkey.beans.GitConfigurationBean;
+import org.p632.turnkey.beans.ProjectBuilderBean;
 import org.p632.turnkey.model.TemplateModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -28,6 +31,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
 
 /**
@@ -40,6 +45,12 @@ public class ProjectBuilderControllerTest {
 	
 	@Mock
     private ProjectBuilderController projectBuilderControllerMock;
+	
+	@Mock
+	private GitConfigurationBean gitConfigurationBeanMock;
+	
+	@Mock
+	private ProjectBuilderBean projectBuilderBeanMock;
      
 	@Autowired
 	private WebApplicationContext webApplicationContext;
@@ -76,16 +87,28 @@ public class ProjectBuilderControllerTest {
 	
 	@Test
 	public void createTemplateMockTest() throws Exception {
-		
 		TemplateModel templateModel = new TemplateModel();
 		templateModel.setArtifact("Sujeet");
+		templateModel.setPackagingType("jar");
+		
+		//String json  = "true";
+		
+		Mockito.when(gitConfigurationBeanMock.createRemoteRepos(templateModel.getArtifact())).thenReturn(201);
 		
 		mockMvc.perform(post("/projectbuilder/buildTemplate")
 				.contentType(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON));
-				//.body(templateModel));
-//				.andReturn());
+				.accept(MediaType.APPLICATION_JSON))
+				//.andExpect(status().isOk())
+				.andDo(MockMvcResultHandlers.print());
 	}
+	
+	 @ExceptionHandler(Exception.class)  
+	 @ResponseBody  
+	 public String handleException1(Exception ex)  
+	 {  
+	   return ex.getMessage();  
+	 }  
+	
 	/**
 	 * @throws java.lang.Exception
 	 */

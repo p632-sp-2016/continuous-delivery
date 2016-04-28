@@ -1,10 +1,10 @@
-<div class="row jumbotron">
-	<form name="templateForm"  ng-submit="processForm()">
+<div class="row jumbotran">
+	<form name="templateForm" ng-submit="processForm()">
 		<div class="form-group col-xs-12 col-md-6 col-lg-6">
 			<label for="parentProjectGroup">Parent Project Group</label> <input
 				type="text" class="form-control" id="parentProjectGroup"
 				placeholder="Parent Project Group"
-				ng-model="template.parentProjectGroup" required>
+				ng-model="template.parentProjectGroup" autofocus required>
 		</div>
 		<div class="form-group col-xs-12 col-md-6 col-lg-6">
 			<label for="parentArtifact">Parent Artifact</label> <input
@@ -27,28 +27,45 @@
 				class="form-control" id="packageName" placeholder="Package Name"
 				ng-model="template.packageName" required>
 		</div>
-		<div class="form-group col-xs-12 col-md-3 col-lg-6">
-			<label for="dependencySelect"> Add Dependency</label> <select
-				name="dependencySelect" id="dependencySelect" multiple="true"
-				ng-model="template.dependencyList">
-				<option ng-repeat="item in dependencyLoadList" value="{{item}}">{{item}}</option>
-			</select>
-		</div>
+		
 		<div class="form-group col-xs-12 col-md-6 col-lg-6">
-			<label for="packagingType">Packaging Type</label><br> <select
+			<label for="packagingType">Packaging Type</label><select
 				name="packagingType" id="packagingType"
-				ng-model="template.packagingType" required>
-				<option ng-repeat="item in packagingTypeList" value="{{item}}">{{item}}</option>
+				ng-model="template.packagingType" class="form-control" required>
+				<option ng-repeat=" item in
+				packagingTypes" value="{{item}}">{{item}}
+				</option>
 			</select>
 		</div>
+		<div
+			class="form-group col-xs-12 col-md-6 col-lg-6 col-md-offset-3 col-lg-offset-3">
+			<div class="input-group">
+				<input type="text" style="z-index:inherit" class="form-control" id="dependency" name="dependency"
+					ng-model="template.dependency" placeholder="Add dependency...">
+				<span class="input-group-btn">
+					<button class="btn btn-success" type="button" id="addDepen"
+						ng-click="addDependency()" ng-disabled="template.dependency==null || template.dependency.length==0">+</button>
+					<button class="btn btn-danger" type="button" id="removeDepen"
+						ng-click="removeDependency()" ng-disabled="template.dependencyList==null || template.dependencyList.length == 0">X</button>
 
-		<div class="form-group row text-center col-lg-12">
-			<button type="submit" name="submit" value="submit" id="submit"
-				class="btn btn-primary">Submit</button>
+				</span>
+			</div>
+		</div>
+		
+		<div
+			class="form-group col-xs-12 col-md-6 col-lg-6 col-md-offset-3 col-lg-offset-3">
+			<select name="dependencySelect" id="dependencySelect" multiple="true"
+				class="form-control" ng-model="template.dependencyList">
+				 <option ng-repeat="item in dependencyLoadList" value="{{item}}">{{item}}</option>
+			</select>
+		</div>
+		<div class="form-group col-lg-12 col-md-12 col-sm-12 col-cs-12">
+			<div
+				class="col-lg-offset-5 col-md-offset-5 col-sm-offset-5 col-xs-offset-2">
+				<button type="submit" name="submit" value="submit" id="submit"
+					class="btn btn-success btn-lg">Generate Project</button>
 
-
-			<button type="button" ng-click="resetForm()"
-				ng-disabled="!isTemplateChanged()" class="btn btn-primary">Reset</button>
+			</div>
 		</div>
 	</form>
 </div>
