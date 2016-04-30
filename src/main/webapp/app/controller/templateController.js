@@ -10,7 +10,7 @@ ciIntegratorApp
 
 							$scope.template = {};
 							$scope.packagingTypes = [ 'jar', 'war', 'ear' ];
-							console.log($scope.packagingTypes[0])
+							// console.log($scope.packagingTypes[0])
 							$scope.template = {
 								packagingType : $scope.packagingTypes[0]
 							};
@@ -23,12 +23,14 @@ ciIntegratorApp
 							});
 
 							$scope.addDependency = function() {
-								if (this.template.dependency != null
-										|| this.template.dependency != " ") {
+								if ((this.template.artifactId != undefined)
+										&& (this.template.groupId != undefined)) {
 									$scope.dependencyLoadList
-											.push(this.template.dependency);
+											.push(this.template.groupId + ":"
+													+ this.template.artifactId);
 								}
-								this.template.dependency = "";
+								this.template.groupId = "";
+								this.template.artifactId = "";
 
 							}
 							$scope.removeDependency = function() {
@@ -36,15 +38,16 @@ ciIntegratorApp
 								if ($scope.template.dependencyList != null
 										&& $scope.template.dependencyList.length > 0) {
 
-									$.each($scope.template.dependencyList,
-										function(i, element) {
-											console.log($scope.template.dependencyList);
-											var index = $scope.dependencyLoadList
-													.indexOf(element);
-											$scope.dependencyLoadList
-													.splice(index,
-															1);
-									});
+									$
+											.each(
+													$scope.template.dependencyList,
+													function(i, element) {
+														var index = $scope.dependencyLoadList
+																.indexOf(element);
+														$scope.dependencyLoadList
+																.splice(index,
+																		1);
+													});
 
 								}
 							}
@@ -60,11 +63,14 @@ ciIntegratorApp
 										.createTemplate(templateData)
 										.then(
 												function(data) {
-													if (data.returnMsg == "success") {
+													console.log(data);
+													if (data != undefined
+															&& data.returnMsg == "success") {
 														console.log("sucesss")
-														$rootScope.displayingMsgType = "success";
 														$rootScope.displayingMsgContent = "Template Created Succesfully";
-														$rootScope.gitUrl = "https://github.com/p632-sp-2016/continuous-delivery/"
+														$rootScope.gitUrl = "https://github.iu.edu/"
+																+ data.orginizationName
+																+ "/"
 																+ $rootScope.projectName
 																+ ".git";
 														$rootScope.bambooUrl = "http://tintin.cs.indiana.edu:8094/browse/"
@@ -75,7 +81,7 @@ ciIntegratorApp
 																.show();
 													} else {
 														console.log("error");
-														
+														$rootScope.errorContent = data.errMsg;
 														$("#failureAlert")
 																.show();
 													}

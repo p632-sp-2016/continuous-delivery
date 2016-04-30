@@ -17,6 +17,16 @@ public class TemplateModel implements Serializable {
 	private ArrayList<String> dependencyList = new ArrayList<String>();
 	private String packagingType;
 	private String returnMsg;
+	private String errMsg;
+	private String organizationName;
+
+	public String getOrganizationName() {
+		return organizationName;
+	}
+
+	public void setOrganizationName(String organizationName) {
+		this.organizationName = organizationName;
+	}
 
 	public String getParentProjectGroup() {
 		return parentProjectGroup;
@@ -81,5 +91,15 @@ public class TemplateModel implements Serializable {
 	public void setReturnMsg(String returnMsg) {
 		this.returnMsg = returnMsg;
 	}
+
+	public String getErrMsg() {
+		return errMsg;
+	}
+
+	public void setErrMsg(String errMsg) {
+		this.errMsg = errMsg;
+	}
+	
+	
 
 }

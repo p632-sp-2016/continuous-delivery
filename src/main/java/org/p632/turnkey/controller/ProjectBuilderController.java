@@ -8,6 +8,7 @@ import org.p632.turnkey.beans.ProjectBuilderBean;
 import org.p632.turnkey.helpers.Constants;
 import org.p632.turnkey.model.TemplateModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
@@ -29,9 +30,12 @@ public class ProjectBuilderController {
 
 	@Autowired
 	private GitConfigurationBean gitConfigurationBean;
-	
+
 	@Autowired
 	private BambooConfigurationBean bambooConfigurationBean;
+	
+	@Value("${test.orginizationName}")
+	private String orginizationName;
 
 	/**
 	 * This method loads the dependency from the file on the server
@@ -41,40 +45,61 @@ public class ProjectBuilderController {
 	 */
 	@RequestMapping(value = "/dependencyList")
 	public ResponseEntity<?> loadDependencyList(ModelMap model) {
-		List<String> dependencyList = builderBean.getDependencyList();
+		List<String> dependencyList;
+		try {
+			dependencyList = builderBean.getDependencyList();
+		} catch (Exception e) {
+			TemplateModel templateModel = new TemplateModel();
+			templateModel.setErrMsg(e.getMessage());
+			return new ResponseEntity<TemplateModel>(templateModel, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		return new ResponseEntity<List<String>>(dependencyList, HttpStatus.OK);
 	}
 
 	/**
-	 * This method is responsible for creating a template project,configuring the project on git and
-	 * building the project on bamboo.
+	 * This method is responsible for creating a template project,configuring
+	 * the project on git and building the project on bamboo.
 	 * 
 	 * @param templateModel
 	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/buildTemplate")
-	public ResponseEntity<?> createTemplate(@RequestBody TemplateModel templateModel) throws Exception {
-
-		int returnStatus = gitConfigurationBean.createRemoteRepos(templateModel.getArtifact());
-		if (returnStatus == 201) {
+	public ResponseEntity<?> createTemplate(@RequestBody TemplateModel templateModel) {
+		templateModel.setReturnMsg(null);
+		try {
 			builderBean.generatePom(templateModel);
-			if(gitConfigurationBean.pushLocalRepos(templateModel)=="OK"){
-				if(gitConfigurationBean.addTeamToRepo(templateModel)==204){
-					templateModel.setReturnMsg("success");
-				}
-				else{
-					templateModel.setReturnMsg("failure");
+			int returnStatus = gitConfigurationBean.createRemoteRepos(templateModel.getArtifact());
+			if (returnStatus == 201) {
+				if (gitConfigurationBean.pushLocalRepos(templateModel) == "OK") {
+					if (gitConfigurationBean.addTeamToRepo(templateModel) == 204) {
+						templateModel.setOrganizationName(orginizationName);
+						templateModel.setReturnMsg(Constants.SUCCESS);
+					} else {
+						templateModel.setReturnMsg(Constants.FAILURE);
+						templateModel.setErrMsg("Error adding teams to remote repository");
+						return new ResponseEntity<TemplateModel>(templateModel,
+								HttpStatus.INTERNAL_SERVER_ERROR);
 					}
-			}else{
-				templateModel.setReturnMsg("failure");
+				} else {
+					templateModel.setReturnMsg(Constants.FAILURE);
+					templateModel.setErrMsg("Error pushing to remote repository");
+					return new ResponseEntity<TemplateModel>(templateModel,
+							HttpStatus.INTERNAL_SERVER_ERROR);
+				}
+			} else {
+				templateModel.setReturnMsg(Constants.FAILURE);
+				templateModel.setErrMsg("Error creating remote repository");
+				return new ResponseEntity<TemplateModel>(templateModel, HttpStatus.INTERNAL_SERVER_ERROR);
 			}
-		}else{
-			templateModel.setReturnMsg("failure");
-			return new ResponseEntity<TemplateModel>(templateModel,HttpStatus.BAD_REQUEST);
+			
+			bambooConfigurationBean.processBuild(templateModel.getArtifact());
+			return new ResponseEntity<TemplateModel>(templateModel, HttpStatus.OK);
+
+		} catch (Exception e) {
+			templateModel.setErrMsg(e.getMessage());
+			return new ResponseEntity<TemplateModel>(templateModel, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-				
-		return new ResponseEntity<TemplateModel>(templateModel,HttpStatus.OK);
 
 	}
 }
