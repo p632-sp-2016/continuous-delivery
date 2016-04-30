@@ -203,7 +203,6 @@ public class GitConfigurationBeanTest {
 		model.setProjectGroup("Dummy_grp");
 
 		Assert.assertTrue(null == spyBean.pushLocalRepos(model));
-
 	}
 
 	/**
