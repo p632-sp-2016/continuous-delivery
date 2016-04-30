@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.p632.turnkey.helpers.Constants;
 import org.p632.turnkey.helpers.Utilities;
 import org.p632.turnkey.model.TemplateModel;
 import org.p632.turnkey.pom.Dependency;
@@ -110,13 +111,23 @@ public class ProjectBuilderBean {
 			DependencyList knownDependencies = xmlMapper.readValue(xml, DependencyList.class);
 
 			for (String selectedDependency : dependencyList) {
-
-				for (Dependency knownDependency : knownDependencies.dependency) {
-					if (selectedDependency.equals(knownDependency.artifactId)) {
-						pom.AddDependency(knownDependency.groupId, knownDependency.artifactId, knownDependency.version);
+				// If it is a dynamic dependency, add it to generated Pom.
+				String[] data = selectedDependency.split(":");
+	    		if (data.length > 1)
+	    		{
+	    			pom.AddDependency(data[0], data[1], Constants.POM_VERSION);	    			
+	    		}
+	    		// Else just search for the artifact and the version from the dependency XML file.
+	    		else
+	    		{
+					for (Dependency knownDependency : knownDependencies.dependency) {
+						if (selectedDependency.equals(knownDependency.artifactId)) {
+							pom.AddDependency(knownDependency.groupId, knownDependency.artifactId, knownDependency.version);
+						}
 					}
-				}
-			}
+	    		}
+			}		
+			
 
 		} catch (Exception ex) {
 			logger.error("Error parsing dependency file", ex);
