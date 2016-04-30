@@ -15,7 +15,7 @@ ciIntegratorApp.factory('ciIntegratorInterceptor', [ '$rootScope', '$location',
 				responseError : function(rejection) {
 					var status = rejection.status;
 					if (status != 200) {
-						$rootScope.displayingMsgContent = "Server Error :" + rejection.statusText;
+						$rootScope.displayingMsgContent = rejection.statusText;
 					}
 
 					return rejection;

@@ -13,11 +13,11 @@ ciIntegratorApp.service('IntegratorService', [
 					d.resolve(response);
 					$log.debug(status);
 					$.LoadingOverlay("hide");
-				}).error(function() {
+				}).error(function(response) {
 					$.LoadingOverlay("hide");
-					d.reject();
+					d.reject(response);
 				});
-
+				
 				return d.promise;
 			};
 
@@ -27,8 +27,8 @@ ciIntegratorApp.service('IntegratorService', [
 						.success(function(response) {
 							d.resolve(response);
 							$log.debug(response);
-						}).error(function() {
-							d.reject();
+						}).error(function(response) {
+							d.reject(response);
 						});
 
 				return d.promise;
