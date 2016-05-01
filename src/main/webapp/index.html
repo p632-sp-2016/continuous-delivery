@@ -12,10 +12,6 @@
 <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
 
 <style>
-.well {
-	background-color: #000;
-}
-
 .header-style {
 	font-family: "Varela Round", sans-serif;
 	color: #eee;
@@ -34,7 +30,8 @@ footer {
 
 <body>
 	<header>
-		<div class=" container-fluid header-style well">
+		<div class=" container-fluid header-style well"
+			style="background-color: #000;">
 			<h1 style="font-color: #fff">
 				<span style="text-transform: uppercase; font-size: 0.8em;">UITS
 					Project Generator</span> <small
@@ -54,8 +51,7 @@ footer {
 				<span aria-hidden="true">&times;</span>
 			</button>
 			<span ng-bind="displayingMsgContent"></span>&nbsp; [<a href="#"
-				onclick="$('#successContent').toggle();">Details</a>]<br />
-			<br />
+				onclick="$('#successContent').toggle();">Details</a>]<br /> <br />
 
 			<div id="successContent"
 				style="height: 100px; overflow-y: scroll; display: none;">
@@ -72,11 +68,18 @@ footer {
 				onclick="$('#failureAlert').hide()" aria-label="Close">
 				<span aria-hidden="true">&times;</span>
 			</button>
-			<span ng-bind="displayingMsgContent"></span>
+			<span ng-bind="displayingMsgContent"></span>&nbsp; [<a href="#"
+				onclick="$('#errorContent').toggle();">Details</a>]<br />
+			<div id="errorContent"
+				style="height: 100px; overflow-y: scroll; display: none;">
+				<span ng-bind="errorContent"></span>
+			</div>
+			<br />
 		</div>
 		<div ui-view></div>
 	</section>
-	<footer class="well"> &copy; 2016-2017 </footer>
+	<footer class="well" style="background-color: #000;"> &copy;
+		2016-2017 </footer>
 
 	<script src="js/jquery-1.12.0.min.js"></script>
 	<script src="js/loadingoverlay.js"></script>

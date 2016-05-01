@@ -10,5 +10,6 @@ public final class Constants {
 	public static final String MAIN_JAVA_FILE = "App.java";
 	public static final String TEST_JAVA_FILE = "AppTest.java";
 	public static final String BAMBOO_SCRIPT = "bamboo.sh";
+	public static final String POM_VERSION = "LATEST";
 	public static final String GIT_REPOSITORY = "https://github.com/p632-sp-2016/continuous-delivery.git";
 }

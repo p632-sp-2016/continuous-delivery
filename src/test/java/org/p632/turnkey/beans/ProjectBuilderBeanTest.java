@@ -87,7 +87,7 @@ public class ProjectBuilderBeanTest {
 	}
 	
 	@Test
-	public void prepareDependencyXmlTest() throws IOException{
+	public void prepareDependencyXmlTest() throws Exception{
 		ProjectBuilderBean spyBean = Mockito.spy(new ProjectBuilderBean());
 		
 		ReflectionTestUtils.setField(spyBean, "serverPath", "dummy_path");
