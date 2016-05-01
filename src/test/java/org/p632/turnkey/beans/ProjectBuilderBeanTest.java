@@ -83,25 +83,25 @@ public class ProjectBuilderBeanTest {
 		spyBean.generatePom(templateModel);
 	}
 	
-//	@Test
-//	public void prepareDependencyXmlTest() throws Exception{
-//		ProjectBuilderBean spyBean = Mockito.spy(new ProjectBuilderBean());
-//		
-//		ReflectionTestUtils.setField(spyBean, "serverPath", "dummy_path");
-//		ReflectionTestUtils.setField(spyBean, "resourceLoader", ldr);
-//		
-//		String path = ProjectBuilderBean.class.getClassLoader().getResource("dependency.xml").getPath().substring(1);
-//		
-//		Mockito.when(ldr.getResource(Mockito.anyString())).thenReturn(resource);
-//		Mockito.when(resource.getFile()).thenReturn(file);
-//		Mockito.when(file.getAbsolutePath()).thenReturn(path);
-//
-//		Pom pom = new Pom();
-//		ArrayList<String> dependencyListlist = new ArrayList<String>();
-//		dependencyListlist.add("spring-core");
-//		
-//		spyBean.prepareDependencyXml(dependencyListlist, pom);
-//	}
+	@Test
+	public void prepareDependencyXmlTest() throws Exception{
+		ProjectBuilderBean spyBean = Mockito.spy(new ProjectBuilderBean());
+		
+		ReflectionTestUtils.setField(spyBean, "serverPath", "dummy_path");
+		ReflectionTestUtils.setField(spyBean, "resourceLoader", ldr);
+		
+		String path = ProjectBuilderBean.class.getClassLoader().getResource("dependency.xml").getPath().substring(1);
+		
+		Mockito.when(ldr.getResource(Mockito.anyString())).thenReturn(resource);
+		Mockito.when(resource.getFile()).thenReturn(file);
+		Mockito.when(file.getAbsolutePath()).thenReturn(path);
+
+		Pom pom = new Pom();
+		ArrayList<String> dependencyListlist = new ArrayList<String>();
+		dependencyListlist.add("spring-core");
+		
+		spyBean.prepareDependencyXml(dependencyListlist, pom);
+	}
 
 	/**
 	 * @throws java.lang.Exception
