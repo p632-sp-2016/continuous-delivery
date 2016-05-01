@@ -6,12 +6,8 @@
 package org.p632.turnkey.beans;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,8 +16,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.p632.turnkey.helpers.Constants;
 import org.p632.turnkey.model.TemplateModel;
-import org.p632.turnkey.pom.DependencyList;
+import org.p632.turnkey.pom.Dependency;
 import org.p632.turnkey.pom.Pom;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -100,10 +97,10 @@ public class ProjectBuilderBeanTest {
 		Mockito.when(file.getAbsolutePath()).thenReturn(path);
 
 		Pom pom = new Pom();
-		ArrayList<String> dependencyList = new ArrayList<String>();
-		dependencyList.add("spring-core");
+		ArrayList<String> dependencyListlist = new ArrayList<String>();
+		dependencyListlist.add("spring-core");
 		
-		spyBean.prepareDependencyXml(dependencyList, pom);
+		spyBean.prepareDependencyXml(dependencyListlist, pom);
 	}
 
 	/**
