@@ -31,7 +31,7 @@ public class BambooConfigurationBeanTest {
 	public void processBuildTest() throws Exception {
 		BambooConfigurationBean spyBean = Mockito.spy(new BambooConfigurationBean());
 		String templateName = "Rohit";
-		ReflectionTestUtils.setField(spyBean, "serverPath", ".home.softeng.students.spring2016.FrancisCD");
+		ReflectionTestUtils.setField(spyBean, "serverPath", "dummy_path");
 
 //		spyBean.processBuild(templateName);
 	}
