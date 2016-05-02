@@ -112,14 +112,14 @@ public class ProjectBuilderBean {
 			DependencyList knownDependencies = xmlMapper.readValue(xml, DependencyList.class);
 
 			for (String selectedDependency : dependencyList) {
-				// If it is a dynamic dependency, add it to generated Pom.
-//				String[] data = selectedDependency.split(":");
-//	    		if (data.length > 1)
-//	    		{
-//	    			pom.AddDependency(data[0], data[1], Constants.POM_VERSION);	    			
-//	    		}
-	    		// Else just search for the artifact and the version from the dependency XML file.
-//	    		else
+				//If it is a dynamic dependency, add it to generated Pom.
+				String[] data = selectedDependency.split(":");
+	    		if (data.length > 1)
+	    		{
+	    			pom.AddDependency(data[0], data[1], Constants.POM_VERSION);	    			
+	    		}
+	    		 //Else just search for the artifact and the version from the dependency XML file.
+	    		else
 	    		{
 					for (Dependency knownDependency : knownDependencies.dependency) {
 						if (selectedDependency.equals(knownDependency.artifactId)) {
