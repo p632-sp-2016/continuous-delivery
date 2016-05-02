@@ -66,7 +66,7 @@ ciIntegratorApp
 													console.log(data);
 													if (data != undefined
 															&& data.returnMsg == "success") {
-														console.log("sucesss")
+														console.log("sucesss +" + data.orginizationName);
 														$rootScope.displayingMsgContent = "Template Created Succesfully";
 														$rootScope.gitUrl = "https://github.iu.edu/"
 																+ data.orginizationName

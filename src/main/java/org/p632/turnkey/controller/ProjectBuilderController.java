@@ -74,6 +74,9 @@ public class ProjectBuilderController {
 				if (gitConfigurationBean.pushLocalRepos(templateModel) == "OK") {
 					if (gitConfigurationBean.addTeamToRepo(templateModel) == 204) {
 						templateModel.setOrganizationName(orginizationName);
+						System.out.println("==========================================");
+						System.out.println(orginizationName);
+						System.out.println("==========================================");
 						templateModel.setReturnMsg(Constants.SUCCESS);
 					} else {
 						templateModel.setReturnMsg(Constants.FAILURE);
