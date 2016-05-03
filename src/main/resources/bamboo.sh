@@ -12,29 +12,20 @@ NEW_PLAN_TEMPLATE_KEY_MASTER="${1}-FCTP"
 
 BAMBOO_SCRIPT="atlassian-cli-4.5.0/bamboo.sh"
 
-
-echo "Running create_bamboo_project.sh script"
-
-echo " This script clones the project for all the teams in bamboo and configures git repositories"
-
-echo " from the project-template into them. It then git adds and git commits the initial set of files to the repos. "
-
+echo "Running bamboo.sh script"
 echo " The '$BAMBOO_SCRIPT' folder should exist before the script starts "
-
 echo " PROJECT_TEMPLATE: $PROJECT_TEMPLATE"
-
-echo " PROJECT_TEMPLATE_KEY :$PROJECT_TEMPLATE_KEY"
-
-echo " NEW_TEMPLATE_KEY_PREFIX : ${1}"
-
+echo " PLAN_TEMPLATE_KEY_DEV :$PLAN_TEMPLATE_KEY_DEV"
+echo " PLAN_TEMPLATE_KEY_FEATURE :$PLAN_TEMPLATE_KEY_FEATURE"
+echo " PLAN_TEMPLATE_KEY_MASTER :$PLAN_TEMPLATE_KEY_MASTER"
+echo " NEW_PLAN_TEMPLATE_KEY_DEV : $NEW_PLAN_TEMPLATE_KEY_DEV"
+echo " NEW_PLAN_TEMPLATE_KEY_FEATURE : $NEW_PLAN_TEMPLATE_KEY_FEATURE"
+echo " NEW_PLAN_TEMPLATE_KEY_MASTER : $NEW_PLAN_TEMPLATE_KEY_MASTER"
 echo " GIT_URL_PREFIX :${2}"
-
 echo " BAMBOO_SCRIPT : $BAMBOO_SCRIPT"
-
 echo " cloning project from template  project "
 
-$BAMBOO_SCRIPT --action cloneProject --project $PROJECT_TEMPLATE --toProject "${1}" \
-
+$BAMBOO_SCRIPT --action cloneProject --project "$PROJECT_TEMPLATE" --toProject "${1}"
 
 echo " creating ${1} plans"
 
