@@ -77,8 +77,10 @@ ciIntegratorApp
 																+ $rootScope.projectName
 																+ ".git";
 														$rootScope.bambooUrl = "http://tintin.cs.indiana.edu:8094/browse/"
-																+ $rootScope.projectName;
+																+ $rootScope.projectName.toUpperCase();
 														$scope.template = {};
+														
+														$("input").removeClass("ng-touched");
 
 														$("#successAlert")
 																.show();
