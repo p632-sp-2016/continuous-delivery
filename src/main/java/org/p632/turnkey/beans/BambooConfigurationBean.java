@@ -52,6 +52,7 @@ public class BambooConfigurationBean {
 			String lineError;
 			while ((lineError = brErr.readLine()) != null) {
 				logger.error(lineError);
+				throw new Exception(lineError);
 			}
 
 			logger.debug("Bamboo build completed succesfully");
