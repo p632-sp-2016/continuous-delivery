@@ -1,5 +1,7 @@
 package org.p632.turnkey.controller;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.List;
 
 import org.p632.turnkey.beans.BambooConfigurationBean;
@@ -33,7 +35,7 @@ public class ProjectBuilderController {
 
 	@Autowired
 	private BambooConfigurationBean bambooConfigurationBean;
-	
+
 	@Value("${test.orginizationName}")
 	private String orginizationName;
 
@@ -50,7 +52,10 @@ public class ProjectBuilderController {
 			dependencyList = builderBean.getDependencyList();
 		} catch (Exception e) {
 			TemplateModel templateModel = new TemplateModel();
-			templateModel.setErrMsg(e.getMessage());
+			StringWriter sw = new StringWriter();
+			e.printStackTrace(new PrintWriter(sw));
+			String exceptionAsString = sw.toString();
+			templateModel.setErrMsg(exceptionAsString);
 			return new ResponseEntity<TemplateModel>(templateModel, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<List<String>>(dependencyList, HttpStatus.OK);
@@ -78,26 +83,27 @@ public class ProjectBuilderController {
 					} else {
 						templateModel.setReturnMsg(Constants.FAILURE);
 						templateModel.setErrMsg("Error adding teams to remote repository");
-						return new ResponseEntity<TemplateModel>(templateModel,
-								HttpStatus.INTERNAL_SERVER_ERROR);
+						return new ResponseEntity<TemplateModel>(templateModel, HttpStatus.INTERNAL_SERVER_ERROR);
 					}
 				} else {
 					templateModel.setReturnMsg(Constants.FAILURE);
 					templateModel.setErrMsg("Error pushing to remote repository");
-					return new ResponseEntity<TemplateModel>(templateModel,
-							HttpStatus.INTERNAL_SERVER_ERROR);
+					return new ResponseEntity<TemplateModel>(templateModel, HttpStatus.INTERNAL_SERVER_ERROR);
 				}
 			} else {
 				templateModel.setReturnMsg(Constants.FAILURE);
 				templateModel.setErrMsg("Error creating remote repository");
 				return new ResponseEntity<TemplateModel>(templateModel, HttpStatus.INTERNAL_SERVER_ERROR);
 			}
-			
+
 			bambooConfigurationBean.processBuild(templateModel.getArtifact());
 			return new ResponseEntity<TemplateModel>(templateModel, HttpStatus.OK);
 
 		} catch (Exception e) {
-			templateModel.setErrMsg(e.getMessage());
+			StringWriter sw = new StringWriter();
+			e.printStackTrace(new PrintWriter(sw));
+			String exceptionAsString = sw.toString();
+			templateModel.setErrMsg(exceptionAsString);
 			return new ResponseEntity<TemplateModel>(templateModel, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
