@@ -22,7 +22,8 @@ ciIntegratorApp
 								$scope.dependencyLoadList = val;
 							});
 
-							$scope.addDependency = function() {
+							$scope.addDependency = function($event) {
+								
 								if ((this.template.artifactId != undefined)
 										&& (this.template.groupId != undefined)) {
 									$scope.dependencyLoadList
@@ -31,9 +32,10 @@ ciIntegratorApp
 								}
 								this.template.groupId = "";
 								this.template.artifactId = "";
+								$event.preventDefault();
 
 							}
-							$scope.removeDependency = function() {
+							$scope.removeDependency = function($event) {
 
 								if ($scope.template.dependencyList != null
 										&& $scope.template.dependencyList.length > 0) {
@@ -50,6 +52,7 @@ ciIntegratorApp
 													});
 
 								}
+								$event.preventDefault();
 							}
 
 							$scope.projectGroup = "";
@@ -69,7 +72,7 @@ ciIntegratorApp
 														console.log("sucesss")
 														$rootScope.displayingMsgContent = "Template Created Succesfully";
 														$rootScope.gitUrl = "https://github.iu.edu/"
-																+ data.orginizationName
+																+ data.organizationName
 																+ "/"
 																+ $rootScope.projectName
 																+ ".git";

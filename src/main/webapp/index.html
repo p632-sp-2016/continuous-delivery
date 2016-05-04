@@ -25,6 +25,13 @@ footer {
 	text-align: center;
 	padding: 5px;
 }
+
+input.ng-invalid.ng-touched {
+    border-color:red;
+}
+input.ng-valid.ng-touched {
+    border-color:lightgreen;
+}
 </style>
 </head>
 
@@ -35,7 +42,7 @@ footer {
 			<h1 style="font-color: #fff">
 				<span style="text-transform: uppercase; font-size: 0.8em;">UITS
 					Project Generator</span> <small
-					style="text-transform: none; font-size: 50%;" class="hidden-xs">bootstrap
+					style="text-transform: none; font-size: 50%;" class="hidden-xs hidden-sm">bootstrap
 					your application now</small> <img src="images/uits-img.png"
 					style="height: 1em;" class="img-responsive img-rounded pull-right" />
 			</h1>
@@ -56,8 +63,8 @@ footer {
 			<div id="successContent"
 				style="height: 100px; overflow-y: scroll; display: none;">
 				Project Name : <span ng-bind="projectName"></span><br /> <br />
-				Git Project Repository : <a href="">{{gitUrl}}</a><br /> <br />
-				Bamboo Plan : <a href="">{{bambooUrl}}</a>
+				Git Project Repository : <a ng-href="{{gitUrl}}" target="_blank">{{gitUrl}}</a><br /> <br />
+				Bamboo Plan : <a ng-href="{{bambooUrl}}" target="_blank">{{bambooUrl}}</a>
 
 			</div>
 		</div>
