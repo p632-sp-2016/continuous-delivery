@@ -24,7 +24,7 @@ ciIntegratorApp.service('IntegratorService', [
 			this.loadDependencyList = function() {
 				var d = $q.defer();
 				$http.get('integrator-rest/projectbuilder/dependencyList')
-						.success(function(response) {
+						.success(function(response,status) {
 							d.resolve(response);
 							$log.debug(response);
 						}).error(function(response) {
