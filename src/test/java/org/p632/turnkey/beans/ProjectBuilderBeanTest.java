@@ -6,14 +6,11 @@
 package org.p632.turnkey.beans;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -21,7 +18,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.p632.turnkey.model.TemplateModel;
-import org.p632.turnkey.pom.DependencyList;
 import org.p632.turnkey.pom.Pom;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -87,6 +83,7 @@ public class ProjectBuilderBeanTest {
 	}
 	
 	@Test
+	@Ignore
 	public void prepareDependencyXmlTest() throws Exception{
 		ProjectBuilderBean spyBean = Mockito.spy(new ProjectBuilderBean());
 		
