@@ -1,0 +1,92 @@
+<div class="row jumbotran">
+	<form name="templateForm" ng-submit="templateForm.$valid && processForm();">
+		<div class="form-group col-xs-12 col-md-6 col-lg-6">
+			<label for="parentProjectGroup">Parent Project Group</label> <input
+				type="text" class="form-control" id="parentProjectGroup"
+				placeholder="Parent Project Group"
+				ng-model="template.parentProjectGroup" autofocus required>
+		</div>
+		<div class="form-group col-xs-12 col-md-6 col-lg-6">
+			<label for="parentArtifact">Parent Artifact</label> <input
+				type="text" class="form-control" id="parentArtifact"
+				placeholder="Parent Artifact" ng-model="template.parentArtifact"
+				required>
+		</div>
+		<div class="form-group col-xs-12 col-md-6 col-lg-6">
+			<label for="projectGroup">Project Group</label> <input type="text"
+				class="form-control" id="projectGroup" placeholder="Project Group"
+				ng-model="template.projectGroup" required>
+		</div>
+		<div class="form-group col-xs-12 col-md-6 col-lg-6">
+			<label for="artifact">Artifact</label> <input type="text"
+				class="form-control" id="artifact" placeholder="Artifact"
+				ng-model="template.artifact" required>
+		</div>
+		<div class="form-group col-xs-12 col-md-6 col-lg-6">
+			<label for="packageName">Package Name</label> <input type="text"
+				class="form-control" id="packageName" placeholder="Package Name"
+				ng-model="template.packageName" required>
+		</div>
+
+		<div class="form-group col-xs-12 col-md-6 col-lg-6">
+			<label for="packagingType">Packaging Type</label><select
+				name="packagingType" id="packagingType"
+				ng-model="template.packagingType" class="form-control" required>
+				<option ng-repeat=" item in
+				packagingTypes" value="{{item}}">{{item}}
+				</option>
+			</select>
+		</div>
+
+
+		<fieldset class="form-group col-lg-12 col-xs-12 col-sm-12 col-md-12">
+			<legend style="font-weight: 700; font-size: 15px">
+				Dependency </legend>
+			<div
+				class="form-group col-xs-12 col-md-12 col-sm-12 col-lg-12 col-md-offset-2 col-lg-offset-2 col-xs-offset-0 col-sm-offset-0">
+
+				<div class="col-md-4">
+					<input type="text" class="form-control" id="grpId" name="grpId"
+						ng-model="template.groupId" placeholder="Group Id">
+				</div>
+				<div class="col-md-4">
+					<input type="text" class="form-control" id="artifactId"
+						name="artifactId" ng-model="template.artifactId"
+						placeholder="Artifact Id">
+				</div>
+
+				<div
+					class="col-lg-2 col-xs-12 col-sm-12 col-md-2 col-lg-offset-0 col-md-offset-0 col-xs-offset-3 col-sm-offset-5">
+					<button type="button" name="submit" value="submit" id="addDep"
+						class="btn btn-primary" ng-click="addDependency($event);" formnovalidate>Add</button>
+				</div>
+			</div>
+			<div class="form-group col-xs-12 col-md-12 col-sm-12 col-lg-12">
+
+				<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col-lg-offset-3 col-md-offset-3 col-xs-offset-0 col-sm-offset-0">
+					<select name="dependencySelect" id="dependencySelect"
+						multiple="true" class="form-control"
+						ng-model="template.dependencyLoadList">
+						<option ng-repeat="item in template.dependencyList" value="{{item}}">{{item}}</option>
+					</select>
+				</div>
+
+				<div
+					class="col-lg-2 col-xs-12 col-sm-12  col-md-2 col-md-offset-0  col-sm-offset-5 col-xs-offset-3 col-lg-offset-0">
+					<button type="button" name="submit" value="submit" id="submit"
+						class="btn btn-primary"
+						ng-disabled="template.dependencyList==null || template.dependencyList.length == 0"
+						ng-click="removeDependency($event)" formnovalidate>Remove</button>
+				</div>
+			</div>
+		</fieldset>
+		<div
+			class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 col-lg-offset-5 col-md-offset-5 col-sm-offset-4 col-xs-offset-2">
+
+			<button type="submit" name="submit" value="submit" id="submit"
+				 class="btn btn-success btn-lg">Generate
+				Project</button>
+		</div>
+
+	</form>
+</div>

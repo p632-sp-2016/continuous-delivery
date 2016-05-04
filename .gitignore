@@ -1,5 +1,24 @@
+#bin
+bin
+
+#libs
+libs
+
+#Settings
+.settings
+
+# Project
+.project
+
+# Classpath
+.classpath
+
+# Config properties
+config.properties
+
 # Logs
 logs
+
 *.log
 npm-debug.log*
 
@@ -32,3 +51,4 @@ node_modules
 
 # Optional REPL history
 .node_repl_history
+/target/
