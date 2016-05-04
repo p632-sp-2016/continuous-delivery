@@ -15,18 +15,22 @@ ciIntegratorApp
 								packagingType : $scope.packagingTypes[0]
 							};
 
-							var dependencyLoadList = IntegratorService
+							var dependencyList = IntegratorService
 									.loadDependencyList();
 
-							dependencyLoadList.then(function(val) {
-								$scope.dependencyLoadList = val;
+							dependencyList.then(function(val) {
+								$scope.template.dependencyList = val;
+							},function(data) {
+								$rootScope.errorContent=data.errMsg;							
+								$("#failureAlert")
+								.show();
 							});
-
+							
 							$scope.addDependency = function($event) {
 								
 								if ((this.template.artifactId != undefined)
 										&& (this.template.groupId != undefined)) {
-									$scope.dependencyLoadList
+									$scope.template.dependencyList
 											.push(this.template.groupId + ":"
 													+ this.template.artifactId);
 								}
@@ -37,16 +41,16 @@ ciIntegratorApp
 							}
 							$scope.removeDependency = function($event) {
 
-								if ($scope.template.dependencyList != null
-										&& $scope.template.dependencyList.length > 0) {
+								if ($scope.template.dependencyLoadList != null
+										&& $scope.template.dependencyLoadList.length > 0) {
 
 									$
 											.each(
-													$scope.template.dependencyList,
+													$scope.template.dependencyLoadList,
 													function(i, element) {
-														var index = $scope.dependencyLoadList
+														var index = $scope.template.dependencyList
 																.indexOf(element);
-														$scope.dependencyLoadList
+														$scope.dependencyList
 																.splice(index,
 																		1);
 													});
@@ -66,7 +70,7 @@ ciIntegratorApp
 										.createTemplate(templateData)
 										.then(
 												function(data) {
-													console.log(data);
+													$rootScope.errorContent="";
 													if (data != undefined
 															&& data.returnMsg == "success") {
 														console.log("sucesss")
